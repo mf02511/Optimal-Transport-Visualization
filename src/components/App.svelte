@@ -1,7 +1,7 @@
 <script>
   import * as d3 from 'd3';
   import Assignment from './Assignment.svelte';
-
+  import Monge from './Monge.svelte';
 </script>
 
 <main>
@@ -16,6 +16,7 @@
   <h2><i>Monge Problem</i></h2>
   <p>Now let's consider a more general case where the weights of all points in <i>X</i> and <i>Y</i> are not necessarily equal and do not necessarily have the same number of points, known as the Monge problem. Since the weights of all points are no longer equal, we cannot simply do a one-to-one assignment and minimize only the distance. We must now also take into account the individual weights of each point when finding the optimal map. The main constraint in this situation is mass conservation: the total mass of the points in <i>X</i> must be equal to the total mass of points in <i>Y</i>.</p>
   <br>
+  <Monge />
 </main>
 
 <style>

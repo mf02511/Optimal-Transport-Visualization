@@ -31,33 +31,33 @@
 	  .x(d => d[0])
 	  .y(d => d[1]);
 
-	let eqRed;
-	let eqBlue;
-	let totalCost;
-	let costArr;	
-	let textY;
-	let i;
-	let highlighted;
-	let opt;
+	let monRed;
+	let monBlue;
+	let totalCostM;
+	let costArrM;	
+	let textYM;
+	let iM;
+	let highlightedM;
+	let optM;
 
 	$: if (N===0) {
-		eqRed = [[7, 8, 1], [7, 2, 0]];
-		eqBlue = [[4, 5, -1], [10, 5, -1]];
-		totalCost = 0;
-		costArr = [];
-		textY = 50;
-		i = -1;
-		highlighted = 0;
-		opt = 8.48;
+		monRed = [[7, 8, radSize * 3, 1], [7, 2, radSize * 1, 0]];
+		monBlue = [[4, 5, radSize * 1, -1], [10, 5, radSize * 3 -1]];
+		totalCostM = 0;
+		costArrM = [];
+		textYM = 50;
+		iM = -1;
+		highlightedM = 0;
+		optM = 8.48;
 	} else {
-		eqRed = [[7, 8, 1], [4, 3, 0], [12, 2, 0]];
-		eqBlue = [[10, 6, -1], [9, 3, -1], [3, 7, -1]];
-		totalCost = 0;
-		costArr = [];
-		textY = 50;
-		i = -1;
-		highlighted = 0;
-		opt = 10.89;
+		monRed = [[7, 8, radSize * 2, 1], [4, 3, radSize * 2, 0], [12, 2, radSize * 0.5, 0]];
+		monBlue = [[10, 6, radSize* 2.5, -1], [9, 3, radSize * 2, -1]];
+		totalCostM = 0;
+		costArrM = [];
+		textYM = 50;
+		iM = -1;
+		highlightedM = 0;
+		optM = 10.89;
 	}
 
 	
@@ -70,9 +70,9 @@
 >
 	<p
 		class='instruction'
-		style='color: #3b2923; font-size: 20px; font-family: "Roboto Condensed", sans-serif'
+		style='color: #3b2923; font-size: 24px; font-family: "Roboto Condensed", sans-serif'
 	>
-		&nbsp;&nbsp;&nbsp; map the highlighted <span style='color: #da7454'>red</span> point to a <span style='color: #7685c0'>blue</span> point:
+		WORK IN PROGRESS (Please don't touch this plot)
 	</p>
 	<svg
 		width = {1000}
@@ -81,7 +81,7 @@
 	>
   		<g>
   			<circle
-  				class='prev'
+  				class='prevM'
   				cx='225'
   				cy='25'
   				r='20'
@@ -94,27 +94,27 @@
   					} else {
   						N--;
   						d3.select('.buttons')
-  							.selectAll('.prev')
+  							.selectAll('.prevM')
   							.attr('fill', 'lightgrey')
   							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
   						d3.select('.buttons')
-  							.selectAll('.prev-text')
+  							.selectAll('.prev-textM')
   							.attr('fill', 'rgba(235, 235, 235, 0.7)');
 
   						d3.select('.buttons')
-  							.selectAll('.next')
+  							.selectAll('.nextM')
   							.attr('fill', 'rgba(235, 235, 235, 0.7)')
   							.attr('stroke', '#d9bdb2');
 
 						d3.select('.buttons')
-							.selectAll('.next-text')
+							.selectAll('.next-textM')
 							.attr('fill', '#d9bdb2');
   					}
   				}}
   			/>
   			<text
-  				class='prev-text'
+  				class='prev-textM'
   				x='211.5'
   				y='33'
   				font-size='23px'
@@ -132,26 +132,26 @@
   				stroke-width='3px'
   				fill='rgba(235, 235, 235, 0.7)'
   				on:click={(event) => {
-				for (let i = 0; i < eqRed.length; i++) {
+				for (let i = 0; i < monRed.length; i++) {
 					if (i === 0) {
-						eqRed[i][2] = 1;
+						monRed[i][3] = 1;
 					} else {
-						eqRed[i][2] = 0;
+						monRed[i][3] = 0;
 					}
 				}
 
-				for (let i = 0; i < eqBlue.length; i++) {
-						eqBlue[i][2] = -1;
+				for (let i = 0; i < monBlue.length; i++) {
+						monBlue[i][3] = -1;
 				}
-				highlighted = 0;
-				i = -1;
-				totalCost = 0;
-				costArr = [];
-				textY = 50;
-				d3.select('#cost')
+				highlightedM = 0;
+				iM = -1;
+				totalCostM = 0;
+				costArrM = [];
+				textYM = 50;
+				d3.select('#cost-monge')
 					.selectAll('.dists')
 					.remove();
-				d3.select('#main-plot')
+				d3.select('#main-plot-monge')
 					.selectAll('.lines')
 					.remove();
 			}}
@@ -163,7 +163,7 @@
   				reset
   			</text>
   			<circle
-  				class='next'
+  				class='nextM'
   				cx='475'
   				cy='25'
   				r='20'
@@ -177,27 +177,27 @@
   						N++;
   					}
   					d3.select('.buttons')
-  							.selectAll('.next')
+  							.selectAll('.nextM')
   							.attr('fill', 'lightgrey')
   							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
 					d3.select('.buttons')
-						.selectAll('.next-text')
+						.selectAll('.next-textM')
 						.attr('fill', 'rgba(235, 235, 235, 0.7)');
 
 					d3.select('.buttons')
-  							.selectAll('.prev')
+  							.selectAll('.prevM')
   							.attr('fill', 'rgba(235, 235, 235, 0.7)')
   							.attr('stroke', '#d9bdb2');
 
 					d3.select('.buttons')
-						.selectAll('.prev-text')
+						.selectAll('.prev-textM')
 						.attr('fill', '#d9bdb2');
 
   				}}
   			/>
   			<text
-  				class='next-text'
+  				class='next-textM'
   				x='467.5'
   				y='33'
   				font-size='23px'
@@ -211,7 +211,7 @@
 	  width = {width}
 	  height = {height}
 	  class='main-plot'
-	  id='main-plot'
+	  id='main-plot-monge'
 	  viewbox='0 0 {width} {height}'	
 	>
 	  <defs>
@@ -249,53 +249,53 @@
 	      </path>
 	    {/each}
 	  </g>
-	  {#each eqRed as data}
+	  {#each monRed as data}
 		<circle
-			class = {data[2] === 1 ? 'highlight':'static'}
+			class = {data[3] === 1 ? 'highlight':'static'}
 			cx={xp(data[0])}
 		    cy={yp(data[1])}
 		    fill='#da7454'
-		    r={radSize}
+		    r={data[2]}
 		/>
 	  {/each}
-	  {#each eqBlue as data}
+	  {#each monBlue as data}
 		  <circle
 		  	class = 'static'
 		    cx={xp(data[0])}
 		    cy={yp(data[1])}
 		    fill='#7685c0'
-		    r={radSize}
+		    r={data[2]}
 		    on:click={(event) => {
-		    	i++;
-		    	if (data[2] < 0) {
-		    		data[2] = highlighted;
-		    		eqRed[highlighted][2] = 0;
-		    		highlighted++;
-		    		if (highlighted < eqRed.length) {
-			    		eqRed[highlighted][2] = 1;
+		    	iM++;
+		    	if (data[3] < 0) {
+		    		data[3] = highlightedM;
+		    		monRed[highlightedM][3] = 0;
+		    		highlightedM++;
+		    		if (highlightedM < monRed.length) {
+			    		monRed[highlightedM][3] = 1;
 			    	}
-			    	let d = dist([eqRed[data[2]][0], eqRed[data[2]][1]], [data[0], data[1]]);
-			    	totalCost += d;
-			    	costArr.push(d);
-			    	d3.select('#cost')
+			    	let d = dist([monRed[data[3]][0], monRed[data[3]][1]], [data[0], data[1]]);
+			    	totalCostM += d;
+			    	costArrM.push(d);
+			    	d3.select('#cost-monge')
 			    		.append('text')
 			    		.attr('class', 'dists')
 			    		.attr('fill', '#3b2923')
 			    		.attr('x', '100')
-			    		.attr('y', textY + 30)
+			    		.attr('y', textYM + 30)
 			    		.style('font-size', '24px')
 			    		.text('+' + d)
-			    	textY += 30;
+			    	textYM += 30;
 
-			    	d3.select('#main-plot')
+			    	d3.select('#main-plot-monge')
 			    		.append('path')
 			    		.attr('class', 'lines')
-			    		.attr('d', line([[xp(data[0]), yp(data[1])], [xp(eqRed[data[2]][0]), yp(eqRed[data[2]][1])]]))
+			    		.attr('d', line([[xp(data[0]), yp(data[1])], [xp(monRed[data[3]][0]), yp(monRed[data[3]][1])]]))
 			    		.attr('stroke', '#82675e')
 			    		.attr('stroke-dasharray', '5,5')
 			    		.attr('stroke-width', '2px')
 			    		.attr('marker-start', 'url(#arrow)')
-			    	return costArr;
+			    	return costArrM;
 		    	} else {
 		    		return;
 		    	}
@@ -308,7 +308,7 @@
 		width=200
 		height={height}
 		class='cost'
-		id='cost'
+		id='cost-monge'
 	>
 		<text
 			x=15
@@ -319,10 +319,10 @@
 			cost:
 		</text>
 
-		{#if i === eqRed.length - 1}
+		{#if iM === monRed.length - 1}
 			<text
 				x=20
-				y={textY + 20}
+				y={textYM + 20}
 				font-weight='600'
 			>
 				____________________
@@ -330,11 +330,11 @@
 
 			<text
 				x=23
-				y={textY + 50}
+				y={textYM + 50}
 				font-weight='600'
 				font-size='24px'
 			>
-				total:&nbsp&nbsp&nbsp&nbsp&nbsp{totalCost}
+				total:&nbsp&nbsp&nbsp&nbsp&nbsp{totalCostM}
 			</text>
 
 			<text
@@ -345,10 +345,10 @@
 				max-width='90%'
 				fill='#bf7f65'
 			>
-				{#if Math.abs(opt - totalCost) < 0.01}
-					optimal!!
+				{#if Math.abs(optM - totalCostM) < 0.01}
+					optMimal!!
 				{:else}
-					not optimal...
+					not optMimal...
 				{/if}
 			</text>
 		{/if}
