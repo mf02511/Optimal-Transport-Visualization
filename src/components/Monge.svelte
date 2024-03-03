@@ -40,6 +40,31 @@
 	let highlightedM;
 	let optM;
 
+	function reset() {
+		for (let i = 0; i < monRed.length; i++) {
+			if (i === 0) {
+				monRed[i][3] = 1;
+			} else {
+				monRed[i][3] = 0;
+			}
+		}
+
+		for (let i = 0; i < monBlue.length; i++) {
+				monBlue[i][3] = -1;
+		}
+		highlightedM = 0;
+		iM = -1;
+		totalCostM = 0;
+		costArrM = [];
+		textYM = 50;
+		d3.select('#cost-monge')
+			.selectAll('.distsM')
+			.remove();
+		d3.select('#main-plot-monge')
+			.selectAll('.linesM')
+			.remove();
+	}
+
 	$: if (N===0) {
 		monRed = [[7, 8, radSize * 3, 1], [7, 2, radSize * 1, 0]];
 		monBlue = [[4, 5, radSize * 1, -1], [10, 5, radSize * 3 -1]];
@@ -110,6 +135,7 @@
 						d3.select('.buttons')
 							.selectAll('.next-textM')
 							.attr('fill', '#d9bdb2');
+						reset();
   					}
   				}}
   			/>
@@ -132,29 +158,8 @@
   				stroke-width='3px'
   				fill='rgba(235, 235, 235, 0.7)'
   				on:click={(event) => {
-				for (let i = 0; i < monRed.length; i++) {
-					if (i === 0) {
-						monRed[i][3] = 1;
-					} else {
-						monRed[i][3] = 0;
-					}
-				}
-
-				for (let i = 0; i < monBlue.length; i++) {
-						monBlue[i][3] = -1;
-				}
-				highlightedM = 0;
-				iM = -1;
-				totalCostM = 0;
-				costArrM = [];
-				textYM = 50;
-				d3.select('#cost-monge')
-					.selectAll('.dists')
-					.remove();
-				d3.select('#main-plot-monge')
-					.selectAll('.lines')
-					.remove();
-			}}
+					reset();
+				}}
   			/>
   			<text
   				x='323'
@@ -175,24 +180,26 @@
   						return;
   					} else {
   						N++;
-  					}
-  					d3.select('.buttons')
-  							.selectAll('.nextM')
-  							.attr('fill', 'lightgrey')
-  							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
+	  					d3.select('.buttons')
+	  							.selectAll('.nextM')
+	  							.attr('fill', 'lightgrey')
+	  							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
-					d3.select('.buttons')
-						.selectAll('.next-textM')
-						.attr('fill', 'rgba(235, 235, 235, 0.7)');
+						d3.select('.buttons')
+							.selectAll('.next-textM')
+							.attr('fill', 'rgba(235, 235, 235, 0.7)');
 
-					d3.select('.buttons')
-  							.selectAll('.prevM')
-  							.attr('fill', 'rgba(235, 235, 235, 0.7)')
-  							.attr('stroke', '#d9bdb2');
+						d3.select('.buttons')
+	  							.selectAll('.prevM')
+	  							.attr('fill', 'rgba(235, 235, 235, 0.7)')
+	  							.attr('stroke', '#d9bdb2');
 
-					d3.select('.buttons')
-						.selectAll('.prev-textM')
-						.attr('fill', '#d9bdb2');
+						d3.select('.buttons')
+							.selectAll('.prev-textM')
+							.attr('fill', '#d9bdb2');
+
+						reset();
+					}
 
   				}}
   			/>
@@ -279,7 +286,7 @@
 			    	costArrM.push(d);
 			    	d3.select('#cost-monge')
 			    		.append('text')
-			    		.attr('class', 'dists')
+			    		.attr('class', 'distsM')
 			    		.attr('fill', '#3b2923')
 			    		.attr('x', '100')
 			    		.attr('y', textYM + 30)
@@ -289,7 +296,7 @@
 
 			    	d3.select('#main-plot-monge')
 			    		.append('path')
-			    		.attr('class', 'lines')
+			    		.attr('class', 'linesM')
 			    		.attr('d', line([[xp(data[0]), yp(data[1])], [xp(monRed[data[3]][0]), yp(monRed[data[3]][1])]]))
 			    		.attr('stroke', '#82675e')
 			    		.attr('stroke-dasharray', '5,5')

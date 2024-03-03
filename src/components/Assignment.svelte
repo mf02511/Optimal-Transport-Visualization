@@ -23,6 +23,31 @@
 		return parseFloat(Math.pow(Math.pow(Math.abs(x[0] - y[0]),2) + Math.pow(Math.abs(x[1] - y[1]),2),0.5).toFixed(2));
 	}
 
+	function reset() {
+		for (let i = 0; i < eqRed.length; i++) {
+			if (i === 0) {
+				eqRed[i][2] = 1;
+			} else {
+				eqRed[i][2] = 0;
+			}
+		}
+
+		for (let i = 0; i < eqBlue.length; i++) {
+				eqBlue[i][2] = -1;
+		}
+		highlighted = 0;
+		i = -1;
+		totalCost = 0;
+		costArr = [];
+		textY = 50;
+		d3.select('#cost')
+			.selectAll('.dists')
+			.remove();
+		d3.select('#main-plot')
+			.selectAll('.lines')
+			.remove();
+	}
+
 	var sym = d3.symbol().type(d3.symbolTriangle).size(500);
 
 	$: N = 0;
@@ -110,6 +135,7 @@
 						d3.select('.buttons')
 							.selectAll('.next-text')
 							.attr('fill', '#d9bdb2');
+						reset();
   					}
   				}}
   			/>
@@ -132,29 +158,8 @@
   				stroke-width='3px'
   				fill='rgba(235, 235, 235, 0.7)'
   				on:click={(event) => {
-				for (let i = 0; i < eqRed.length; i++) {
-					if (i === 0) {
-						eqRed[i][2] = 1;
-					} else {
-						eqRed[i][2] = 0;
-					}
-				}
-
-				for (let i = 0; i < eqBlue.length; i++) {
-						eqBlue[i][2] = -1;
-				}
-				highlighted = 0;
-				i = -1;
-				totalCost = 0;
-				costArr = [];
-				textY = 50;
-				d3.select('#cost')
-					.selectAll('.dists')
-					.remove();
-				d3.select('#main-plot')
-					.selectAll('.lines')
-					.remove();
-			}}
+					reset();
+				}}
   			/>
   			<text
   				x='323'
@@ -175,25 +180,26 @@
   						return;
   					} else {
   						N++;
-  					}
-  					d3.select('.buttons')
+  						d3.select('.buttons')
   							.selectAll('.next')
   							.attr('fill', 'lightgrey')
   							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
-					d3.select('.buttons')
-						.selectAll('.next-text')
-						.attr('fill', 'rgba(235, 235, 235, 0.7)');
+						d3.select('.buttons')
+							.selectAll('.next-text')
+							.attr('fill', 'rgba(235, 235, 235, 0.7)');
 
-					d3.select('.buttons')
-  							.selectAll('.prev')
-  							.attr('fill', 'rgba(235, 235, 235, 0.7)')
-  							.attr('stroke', '#d9bdb2');
+						d3.select('.buttons')
+	  							.selectAll('.prev')
+	  							.attr('fill', 'rgba(235, 235, 235, 0.7)')
+	  							.attr('stroke', '#d9bdb2');
 
-					d3.select('.buttons')
-						.selectAll('.prev-text')
-						.attr('fill', '#d9bdb2');
-
+						d3.select('.buttons')
+							.selectAll('.prev-text')
+							.attr('fill', '#d9bdb2');
+						reset();
+  					}
+  					
   				}}
   			/>
   			<text
@@ -266,8 +272,8 @@
 		    fill='#7685c0'
 		    r={radSize}
 		    on:click={(event) => {
-		    	i++;
 		    	if (data[2] < 0) {
+		    		i++;
 		    		data[2] = highlighted;
 		    		eqRed[highlighted][2] = 0;
 		    		highlighted++;
