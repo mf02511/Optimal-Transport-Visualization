@@ -104,16 +104,8 @@
 		height = {50}
 		class='buttons'
 	>
-  		<g>
-  			<circle
-  				class='prev'
-  				cx='225'
-  				cy='25'
-  				r='20'
-  				fill='lightgrey'
-  				stroke='rgba(235, 235, 235, 0.7)'
-  				stroke-width='3px'
-  				on:click={(event) => {
+  		<g
+  			on:click={(event) => {
   					if (N === 0) {
   						return;
   					} else {
@@ -138,6 +130,15 @@
 						reset();
   					}
   				}}
+  		>
+  			<circle
+  				class='prev'
+  				cx='225'
+  				cy='25'
+  				r='20'
+  				fill='lightgrey'
+  				stroke='rgba(235, 235, 235, 0.7)'
+  				stroke-width='3px'
   			/>
   			<text
   				class='prev-text'
@@ -148,6 +149,13 @@
   			>
   				&#x25C0;
   			</text>
+  		</g>
+
+  		<g
+  			on:click={(event) => {
+					reset();
+				}}
+  		>
   			<rect
   				x='300'
   				y='2.5'
@@ -157,9 +165,6 @@
   				stroke='#d9bdb2'
   				stroke-width='3px'
   				fill='rgba(235, 235, 235, 0.7)'
-  				on:click={(event) => {
-					reset();
-				}}
   			/>
   			<text
   				x='323'
@@ -167,15 +172,9 @@
   			>
   				reset
   			</text>
-  			<circle
-  				class='next'
-  				cx='475'
-  				cy='25'
-  				r='20'
-  				fill='rgba(235, 235, 235, 0.7)'
-  				stroke='#d9bdb2'
-  				stroke-width='3px'
-  				on:click={(event) => {
+  		</g>
+  		<g
+  			on:click={(event) => {
   					if (N === 1) {
   						return;
   					} else {
@@ -201,6 +200,16 @@
   					}
   					
   				}}
+  		>
+  			<circle
+  				class='next'
+  				cx='475'
+  				cy='25'
+  				r='20'
+  				fill='rgba(235, 235, 235, 0.7)'
+  				stroke='#d9bdb2'
+  				stroke-width='3px'
+  				
   			/>
   			<text
   				class='next-text'
@@ -212,6 +221,7 @@
   				&#x25B6;
   			</text>
   		</g>
+  		
 	</svg>
 	<svg
 	  width = {width}
