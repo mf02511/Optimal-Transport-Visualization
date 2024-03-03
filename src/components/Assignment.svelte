@@ -68,6 +68,12 @@
 <div
 	class='assignment-demo'
 >
+	<p
+		class='instruction'
+		style='color: #3b2923; font-size: 24px; font-family: "Roboto Condensed", sans-serif'
+	>
+		&nbsp;&nbsp;&nbsp; map the highlighted <span style='color: #da7454'>red</span> point to a <span style='color: #7685c0'>blue</span> point:
+	</p>
 	<svg
 		width = {1000}
 		height = {50}
@@ -354,6 +360,7 @@
 	.assignment-demo {
 		margin: auto;
 		width: 70%;
+		font-family: "Roboto Condensed", sans-serif;
 	}
 	
 	text {
@@ -363,7 +370,6 @@
 	.buttons {
 		display: block;
 		margin: auto;
-		font-family: "Roboto Condensed", sans-serif;
 		fill: #3b2923;
 		font-size: 28px;
 	}
