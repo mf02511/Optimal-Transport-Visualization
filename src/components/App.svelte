@@ -1,15 +1,24 @@
 <script>
   import * as d3 from 'd3';
   import Assignment from './Assignment.svelte';
-
+  import Monge from './Monge.svelte';
 </script>
 
 <main>
   <h1>Optimal Transport Mapping</h1>
-  <p class='intro'>An important problem in machine learning...</p>
+  <p class='intro'></p>
+
+  <h2></h2>
+  <p></p>
+  <Assignment />
+
+  <h2></h2>
+  <p></p>
+  <Monge />
 </main>
 
-<Assignment />
+
+
 
 <style>
   @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Instrument+Serif:ital@0;1&display=swap');
