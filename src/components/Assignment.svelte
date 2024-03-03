@@ -95,7 +95,7 @@
 >
 	<p
 		class='instruction'
-		style='color: #3b2923; font-size: 24px; font-family: "Roboto Condensed", sans-serif'
+		style='color: #3b2923; font-size: 20px; font-family: "Roboto Condensed", sans-serif'
 	>
 		&nbsp;&nbsp;&nbsp; map the highlighted <span style='color: #da7454'>red</span> point to a <span style='color: #7685c0'>blue</span> point:
 	</p>
