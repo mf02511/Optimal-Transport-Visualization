@@ -67,7 +67,7 @@
 
 	$: if (N===0) {
 		monRed = [[7, 8, radSize * 3, 1], [7, 2, radSize * 1, 0]];
-		monBlue = [[4, 5, radSize * 1, -1], [10, 5, radSize * 3 -1]];
+		monBlue = [[4, 5, radSize * 1, -1], [10, 5, radSize * 3, -1]];
 		totalCostM = 0;
 		costArrM = [];
 		textYM = 50;
@@ -97,12 +97,12 @@
 		class='instruction'
 		style='color: #3b2923; font-size: 24px; font-family: "Roboto Condensed", sans-serif'
 	>
-		WORK IN PROGRESS (Please don't touch this plot)
+		WORK IN PROGRESS
 	</p>
 	<svg
 		width = {1000}
 		height = {50}
-		class='buttons'
+		class='buttonsM'
 	>
   		<g>
   			<circle
@@ -118,21 +118,21 @@
   						return;
   					} else {
   						N--;
-  						d3.select('.buttons')
+  						d3.select('.buttonsM')
   							.selectAll('.prevM')
   							.attr('fill', 'lightgrey')
   							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
-  						d3.select('.buttons')
+  						d3.select('.buttonsM')
   							.selectAll('.prev-textM')
   							.attr('fill', 'rgba(235, 235, 235, 0.7)');
 
-  						d3.select('.buttons')
+  						d3.select('.buttonsM')
   							.selectAll('.nextM')
   							.attr('fill', 'rgba(235, 235, 235, 0.7)')
   							.attr('stroke', '#d9bdb2');
 
-						d3.select('.buttons')
+						d3.select('.buttonsM')
 							.selectAll('.next-textM')
 							.attr('fill', '#d9bdb2');
 						reset();
@@ -180,21 +180,21 @@
   						return;
   					} else {
   						N++;
-	  					d3.select('.buttons')
+	  					d3.select('.buttonsM')
 	  							.selectAll('.nextM')
 	  							.attr('fill', 'lightgrey')
 	  							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
-						d3.select('.buttons')
+						d3.select('.buttonsM')
 							.selectAll('.next-textM')
 							.attr('fill', 'rgba(235, 235, 235, 0.7)');
 
-						d3.select('.buttons')
+						d3.select('.buttonsM')
 	  							.selectAll('.prevM')
 	  							.attr('fill', 'rgba(235, 235, 235, 0.7)')
 	  							.attr('stroke', '#d9bdb2');
 
-						d3.select('.buttons')
+						d3.select('.buttonsM')
 							.selectAll('.prev-textM')
 							.attr('fill', '#d9bdb2');
 
@@ -332,7 +332,7 @@
 				y={textYM + 20}
 				font-weight='600'
 			>
-				____________________
+				_____________________
 			</text>
 
 			<text
@@ -341,7 +341,7 @@
 				font-weight='600'
 				font-size='24px'
 			>
-				total:&nbsp&nbsp&nbsp&nbsp&nbsp{totalCostM}
+				total:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{totalCostM}
 			</text>
 
 			<text
@@ -353,9 +353,9 @@
 				fill='#bf7f65'
 			>
 				{#if Math.abs(optM - totalCostM) < 0.01}
-					optMimal!!
+					optimal!!
 				{:else}
-					not optMimal...
+					not optimal...
 				{/if}
 			</text>
 		{/if}
@@ -373,7 +373,7 @@
 		padding: 0;
 	}
 
-	.buttons {
+	.buttonsM {
 		display: block;
 		margin: auto;
 		fill: #3b2923;

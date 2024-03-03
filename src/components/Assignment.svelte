@@ -331,7 +331,7 @@
 				y={textY + 20}
 				font-weight='600'
 			>
-				____________________
+				_____________________
 			</text>
 
 			<text
@@ -340,7 +340,7 @@
 				font-weight='600'
 				font-size='24px'
 			>
-				total:&nbsp&nbsp&nbsp&nbsp&nbsp{totalCost}
+				total:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{totalCost}
 			</text>
 
 			<text

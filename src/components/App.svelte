@@ -33,6 +33,7 @@
 
   main {
     font-family: "EB Garmond", serif;
+    color: #3b2923;
   }
 
   h1 {
@@ -40,7 +41,7 @@
     text-align: center;
     font-weight: 600;
     font-size: 40px;
-    color: #3b2923;
+    
   }
 
   p {
@@ -55,7 +56,6 @@
     font-family: "EB Garmond", serif;
     font-weight: 600;
     font-size: 30px;
-    color: #3b2923;
     margin-left: 45px;
   }
 
