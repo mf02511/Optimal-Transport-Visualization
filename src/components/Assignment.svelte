@@ -23,6 +23,51 @@
 		return parseFloat(Math.pow(Math.pow(Math.abs(x[0] - y[0]),2) + Math.pow(Math.abs(x[1] - y[1]),2),0.5).toFixed(2));
 	}
 
+	function arrowEndPoints(a, ar, b, br) {
+		let endA = a;
+		let endB = b;
+		if (a[0] < b[0]) {
+			if (a[1] == b[1]){
+				endA[0] += ar;
+				endB[0] -= br;
+			}else if (a[1] < b[1]) {
+				endA[0] += ar/1.414;
+				endB[0] -= br/1.414;
+				endA[1] += ar/1.414;
+				endB[1] -= br/1.414;
+			} else {
+				endA[0] += ar/1.414;
+				endB[0] -= br/1.414;
+				endA[1] -= ar/1.414;
+				endB[1] += br/1.414;
+			}
+		} else if (a[0] > b[0]) {
+			if (a[1] == b[1]){
+				endA[0] -= ar;
+				endB[0] += br;
+			}else if (a[1] < b[1]) {
+				endA[0] -= ar/1.414;
+				endB[0] += br/1.414;
+				endA[1] += ar/1.414;
+				endB[1] -= br/1.414;
+			} else {
+				endA[0] -= ar/1.414;
+				endB[0] += br/1.414;
+				endA[1] -= ar/1.414;
+				endB[1] += br/1.414;
+			}
+		} else {
+			if (a[1] < b[1]) {
+				endA[1] += ar;
+				endB[1] -= br;
+			} else if (a[1] > b[1]) {
+				endA[1] -= ar;
+				endB[1] += br;
+			}
+		}
+		return [endA, endB];
+	}
+
 	function reset() {
 		for (let i = 0; i < eqRed.length; i++) {
 			if (i === 0) {
@@ -40,6 +85,7 @@
 		totalCost = 0;
 		costArr = [];
 		textY = 50;
+		failed = 0;
 		d3.select('#cost')
 			.selectAll('.dists')
 			.remove();
@@ -50,7 +96,7 @@
 
 	var sym = d3.symbol().type(d3.symbolTriangle).size(500);
 
-	$: N = 0;
+	let N = 0;
 
 	$: line = d3.line()
 	  .x(d => d[0])
@@ -65,6 +111,11 @@
 	let highlighted;
 	let opt;
 
+	let failed;
+	$: if (i === eqRed.length - 1 && Math.abs(opt - totalCost) > 0.01) {
+		failed = 1;
+	}
+
 	$: if (N===0) {
 		eqRed = [[7, 8, 1], [7, 2, 0]];
 		eqBlue = [[4, 5, -1], [10, 5, -1]];
@@ -74,6 +125,7 @@
 		i = -1;
 		highlighted = 0;
 		opt = 8.48;
+		failed = 0;
 	} else {
 		eqRed = [ [4, 3, 1], [7, 8, 0], [12, 2, 0]];
 		eqBlue = [[10, 6, -1], [9, 3, -1], [3, 7, -1]];
@@ -83,6 +135,7 @@
 		i = -1;
 		highlighted = 0;
 		opt = 10.89;
+		failed = 0;
 	}
 
 	
@@ -165,6 +218,7 @@
   				stroke='#d9bdb2'
   				stroke-width='3px'
   				fill='rgba(235, 235, 235, 0.7)'
+  				class={failed === 1 ? 'highlight':'static'}
   			/>
   			<text
   				x='323'
@@ -202,7 +256,7 @@
   				}}
   		>
   			<circle
-  				class='next'
+  				class={(i === eqRed.length - 1 && N < 1 && failed === 0) ? 'highlight next':'static next'}
   				cx='475'
   				cy='25'
   				r='20'
@@ -306,7 +360,7 @@
 			    	d3.select('#main-plot')
 			    		.append('path')
 			    		.attr('class', 'lines')
-			    		.attr('d', line([[xp(data[0]), yp(data[1])], [xp(eqRed[data[2]][0]), yp(eqRed[data[2]][1])]]))
+			    		.attr('d', line(arrowEndPoints([xp(data[0]), yp(data[1])], radSize, [xp(eqRed[data[2]][0]), yp(eqRed[data[2]][1])], radSize)))
 			    		.attr('stroke', '#82675e')
 			    		.attr('stroke-dasharray', '5,5')
 			    		.attr('stroke-width', '2px')
@@ -408,10 +462,16 @@
 
 	.highlight {
 		stroke: rgba(255, 241, 84, 0.8);
-		stroke-width: 4px;
+		stroke-width: 8px;
+		animation: blinking 0.8s linear infinite alternate-reverse;
 
 	}
 	.grid {
 		stroke: #b5b3b3;
+	}
+
+	@keyframes blinking {
+	  from { stroke-opacity: 1; }
+	  to { stroke-opacity: 0.1; }
 	}
 </style>

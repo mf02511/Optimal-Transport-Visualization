@@ -1,11 +1,12 @@
 <script>
 	import * as d3 from 'd3';
+	import { interpolateLab } from 'd3-interpolate';
+    import { tweened } from 'svelte/motion';
 	const width = 700;
 	const height = 500;
 	const gridSize = 50;
 	const radSize = gridSize/3;
 	const baseArea = Math.pow(radSize,2) * Math.PI;
-	// console.log(baseArea);
 
 	const xGridData = [];
 	const yGridData = [];
@@ -43,8 +44,59 @@
 	let highlightedM;
 	let optM;
 
+	let failedM = 0;
+
+	$: if (iM === monRed.length - 1 && Math.abs(optM - totalCostM) > 0.01) {
+		failedM = 1;
+	}
+
 	function rad(size) {
 		return radSize * Math.pow(size, 0.5)
+	}
+
+	function arrowEndPoints(a, ar, b, br) {
+		let endA = a;
+		let endB = b;
+		if (a[0] < b[0]) {
+			if (a[1] == b[1]){
+				endA[0] += ar;
+				endB[0] -= br;
+			}else if (a[1] < b[1]) {
+				endA[0] += ar/1.414;
+				endB[0] -= br/1.414;
+				endA[1] += ar/1.414;
+				endB[1] -= br/1.414;
+			} else {
+				endA[0] += ar/1.414;
+				endB[0] -= br/1.414;
+				endA[1] -= ar/1.414;
+				endB[1] += br/1.414;
+			}
+		} else if (a[0] > b[0]) {
+			if (a[1] == b[1]){
+				endA[0] -= ar;
+				endB[0] += br;
+			}else if (a[1] < b[1]) {
+				endA[0] -= ar/1.414;
+				endB[0] += br/1.414;
+				endA[1] += ar/1.414;
+				endB[1] -= br/1.414;
+			} else {
+				endA[0] -= ar/1.414;
+				endB[0] += br/1.414;
+				endA[1] -= ar/1.414;
+				endB[1] += br/1.414;
+			}
+		} else {
+			if (a[1] < b[1]) {
+				endA[1] += ar;
+				endB[1] -= br;
+			} else if (a[1] > b[1]) {
+				endA[1] -= ar;
+				endB[1] += br;
+			}
+		}
+		return [endA, endB];
 	}
 
 	function reset() {
@@ -66,8 +118,12 @@
 		distArrM = [];
 		weightArrM = [];
 		textYM = 50;
+		failedM = 0;
 		d3.select('#cost-monge')
 			.selectAll('.distsM')
+			.remove();
+		d3.select('#cost-monge')
+			.selectAll('.fail')
 			.remove();
 		d3.select('#main-plot-monge')
 			.selectAll('.linesM')
@@ -94,6 +150,7 @@
 		iM = -1;
 		highlightedM = 0;
 		optM = 19.7;
+		failedM = 0;
 	} else {
 		monRed = [[1, 4, 1, 1], [4, 7, 1, 0], [7, 8, 1, 0], [8, 4, 2, 0], [13, 9, 2, 0]];
 		monBlue = [[3, 9, 2, -1, 2], [9, 5, 2, -1, 2], [5, 1, 3, -1, 3]];
@@ -104,6 +161,7 @@
 		iM = -1;
 		highlightedM = 0;
 		optM = 31.16;
+		failedM = 0;
 	}
 
 	
@@ -116,9 +174,9 @@
 >
 	<p
 		class='instruction'
-		style='color: #3b2923; font-size: 24px; font-family: "Roboto Condensed", sans-serif'
+		style='color: #3b2923; font-size: 20px; font-family: "Roboto Condensed", sans-serif'
 	>
-		WORK IN PROGRESS
+		&nbsp;&nbsp;&nbsp; map the highlighted <span style='color: #da7454'>red</span> point to a <span style='color: #7685c0'>blue</span> point:
 	</p>
 	<svg
 		width = {1000}
@@ -178,6 +236,7 @@
   			on:click={(event) => {
 					reset();
 				}}
+			id='resetM'
   		>	
   			<rect
   				x='300'
@@ -188,6 +247,7 @@
   				stroke='#d9bdb2'
   				stroke-width='3px'
   				fill='rgba(235, 235, 235, 0.7)'
+  				class={failedM === 1 ? 'highlight':'static'}
   			/>
   			<text
   				x='323'
@@ -229,7 +289,7 @@
   				}}
   		>
   			<circle
-  				class='nextM'
+  				class={(iM === monRed.length - 1 && N < 2 && failedM === 0) ? 'highlight nextM':'static nextM'}
   				cx='475'
   				cy='25'
   				r='20'
@@ -301,10 +361,11 @@
 			/>
 			<text
 				x={xp(data[0])}
-				y={yp(data[1]) + 5}
+				y={yp(data[1]) + 8}
 				text-anchor='middle'
 				fill='white'
-				font-size=14px
+				font-size=24px
+				font-weight=600
 			>
 				{data[2]}
 			</text>
@@ -318,10 +379,7 @@
 		    		iM++;
 		    		data[3] = highlightedM;
 		    		monRed[highlightedM][3] = 0;
-		    		highlightedM++;
-		    		if (highlightedM < monRed.length) {
-			    		monRed[highlightedM][3] = 1;
-			    	}
+		    		
 			    	let d = dist([monRed[data[3]][0], monRed[data[3]][1]], [data[0], data[1]]);
 			    	totalCostM += d * monRed[data[3]][2];
 			    	distArrM.push(d);
@@ -340,12 +398,40 @@
 			    	d3.select('#main-plot-monge')
 			    		.append('path')
 			    		.attr('class', 'linesM')
-			    		.attr('d', line([[xp(data[0]), yp(data[1])], [xp(monRed[data[3]][0]), yp(monRed[data[3]][1])]]))
+			    		.attr('d', line(arrowEndPoints([xp(data[0]), yp(data[1])], rad(data[2]), [xp(monRed[data[3]][0]), yp(monRed[data[3]][1])], rad(monRed[data[3]][2]))))
 			    		.attr('stroke', '#82675e')
-			    		
-			    		.attr('pathLength', '8')
+			    		.attr('stroke-dasharray', '5,5')
 			    		.attr('stroke-width', '2px')
 			    		.attr('marker-start', 'url(#arrow)')
+
+			    	for (let i = 0; i < monBlue.length; i++) {
+			    		let remain = false;
+			    		for (let j=highlightedM; j < monRed.length; j++) {
+			    			if (monRed[j][2] <= monBlue[i][4] || monBlue[i][4] == 0) {
+				    			remain = true;
+				    		}
+			    		}
+			    		if (remain == false) {
+			    			d3.select('#cost-monge')
+					    		.append('text')
+					    		.attr('class', 'failM')
+					    		.attr('fill', '#bf7f65')
+					    		.attr('x', '15')
+					    		.attr('y', '475')
+					    		.style('font-size', '30px')
+					    		.style('font-weight', '600')
+					    		.style('max-width', '90%')
+					    		.text('invalid map. try again!')
+
+					    	failedM = 1;
+					    	highlightedM = monRed.length;
+			    		}
+			    		
+			    	}
+			    	highlightedM++;
+		    		if (highlightedM < monRed.length) {
+			    		monRed[highlightedM][3] = 1;
+			    	}
 		    	} else {
 		    		return;
 		    	}
@@ -360,10 +446,11 @@
 		  />
 		  <text
 			x={xp(data[0])}
-			y={yp(data[1]) + 5}
+			y={yp(data[1]) + 8}
 			text-anchor='middle'
 			fill='white'
-			font-size=14px
+			font-size=24px
+			font-weight=600
 		  >
 			{data[2]}
 		  </text>
@@ -460,10 +547,15 @@
 
 	.highlight {
 		stroke: rgba(255, 241, 84, 0.8);
-		stroke-width: 4px;
-
-	}
+		stroke-width: 8px;
+		animation: blinking 0.8s linear infinite alternate-reverse;
+    }
 	.grid {
 		stroke: #b5b3b3;
+	}
+
+	@keyframes blinking {
+	  from { stroke-opacity: 1; }
+	  to { stroke-opacity: 0.1; }
 	}
 </style>

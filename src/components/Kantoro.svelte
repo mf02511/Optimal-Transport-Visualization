@@ -5,7 +5,6 @@
 	const gridSize = 50;
 	const radSize = gridSize/3;
 	const baseArea = Math.pow(radSize,2) * Math.PI;
-	// console.log(baseArea);
 
 	const xGridData = [];
 	const yGridData = [];
@@ -178,7 +177,13 @@
 	let textYK;
 	let iK;
 	let highlightedK;
-	let optM;
+	let optK;
+
+	let failedK = 0;
+
+	$: if (iK == totalWeight && Math.abs(optK - totalCostK) > 0.01) {
+		failedK = 1;
+	}
 
 	function rad(size) {
 		return radSize * Math.pow(size, 0.5)
@@ -201,14 +206,18 @@
 				kanBlue[i][4] = kanBlue[i][2];
 		}
 
-		transMat = [[0, 0], [0, 0]];
-		matId = [['aa', 'ab'], ['ba', 'bb']];
+		for (let i = 0; i < transMat.length; i++) {
+			for (let j = 0; j < transMat[i].length; j++) {
+				transMat[i][j] = 0;
+			}
+		}
 		highlightedK = 0;
 		iK = 0;
 		totalCostK = 0;
 		distArrK = [];
 		weightArrK = [];
 		textYK = 50;
+		failedK = 0;
 		d3.select('#cost-kanto')
 			.selectAll('.distsK')
 			.remove();
@@ -232,27 +241,33 @@
 		textYK = 50;
 		iK = 0;
 		highlightedK = 0;
-		optM = 16.84;
+		optK = 13.94;
 	} else if (N===1) {
-		kanRed = [[2, 3, 1, 1], [5, 7, 1, 0], [8, 2, 1, 0], [10, 8, 2, 0], [11, 7, 1, 0]];
-		kanBlue = [[8, 6, 3, -1, 3], [7, 3, 3, -1, 3]];
+		kanRed = [[2, 9, 2, 1, 2], [4, 3, 1, 0, 1], [8, 8, 3, 0, 3], [9, 5, 2, 0, 2], [11, 7, 2, 0, 2]];
+		kanBlue = [[11, 4, 4, -1, 4, 0], [7, 2, 3, -1, 3, 1], [5, 7, 3, -1, 3, 2]];
+		transMat = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
+		matId = [['aa', 'ab', 'ac'], ['ba', 'bb', 'bc'], ['ca', 'cb', 'cc'], ['da', 'db', 'dc'], ['ea', 'eb', 'ec']];
+		totalWeight = 10;
 		totalCostK = 0;
 		distArrK = [];
 		weightArrK = [];
 		textYK = 50;
 		iK = 0;
 		highlightedK = 0;
-		optM = 19.7;
+		optK = 19.7;
 	} else {
-		kanRed = [[1, 4, 1, 1], [4, 7, 1, 0], [7, 8, 1, 0], [8, 4, 2, 0], [13, 9, 2, 0]];
-		kanBlue = [[3, 9, 2, -1, 2], [9, 5, 2, -1, 2], [5, 1, 3, -1, 3]];
+		kanRed = [[2, 3, 4, 1, 4], [7, 5, 3, 0, 3], [10, 6, 3, 0, 3]];
+		kanBlue = [[4, 5, 2, -1, 2, 0], [5, 2, 1, -1, 1, 1], [6, 9, 2, -1, 2, 2], [9, 8, 3, -1, 3, 3], [13, 5, 2, -1, 2, 4]];
+		transMat = [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]];
+		matId = [['aa', 'ab', 'ac', 'ad', 'ae'], ['ba', 'bb', 'bc', 'bd', 'be'], ['ca', 'cb', 'cc', 'cd', 'ce']];
+		totalWeight = 10;
 		totalCostK = 0;
 		distArrK = [];
 		weightArrK = [];
 		textYK = 50;
 		iK = 0;
 		highlightedK = 0;
-		optM = 31.16;
+		optK = 31.16;
 	}
 
 	
@@ -265,9 +280,9 @@
 >
 	<p
 		class='instruction'
-		style='color: #3b2923; font-size: 24px; font-family: "Roboto Condensed", sans-serif'
+		style='color: #3b2923; font-size: 20px; font-family: "Roboto Condensed", sans-serif'
 	>
-		WORK IN PROGRESS
+		&nbsp;&nbsp;&nbsp; map the highlighted <span style='color: #da7454'>red</span> point to a <span style='color: #7685c0'>blue</span> point:
 	</p>
 	<svg
 		width = {1000}
@@ -337,6 +352,7 @@
   				stroke='#d9bdb2'
   				stroke-width='3px'
   				fill='rgba(235, 235, 235, 0.7)'
+  				class={failedK === 1 ? 'highlight':'static'}
   			/>
   			<text
   				x='323'
@@ -378,13 +394,14 @@
   				}}
   		>
   			<circle
-  				class='nextK'
+  				class={(iK == totalWeight && N < 2 && failedK === 0) ? 'highlight nextK':'static nextK'}
   				cx='475'
   				cy='25'
   				r='20'
   				fill='rgba(235, 235, 235, 0.7)'
   				stroke='#d9bdb2'
   				stroke-width='3px'
+
   			/>
   			<text
   				class='next-textK'
@@ -502,8 +519,9 @@
 			    		.attr('id', textId)
 			    		.attr('x', xp(mid[0]) - 5)
 			    		.attr('y', yp(mid[1]) + 8)
+			    		.attr('fill', '#3b2923')
 			    		.attr('text-anchor', 'middle')
-			    		.attr('fill', 'black')
+			    		
 			    		.attr('style', 'font-size: 24px; font-weight: 600')
 			    		.text(transMat[data[3]][data[5]])
 			    	} else {
@@ -589,7 +607,7 @@
 				max-width='90%'
 				fill='#bf7f65'
 			>
-				{#if Math.abs(optM - totalCostK) < 0.01}
+				{#if Math.abs(optK - totalCostK) < 0.01}
 					optimal!!
 				{:else}
 					not optimal...
@@ -637,10 +655,16 @@
 
 	.highlight {
 		stroke: rgba(255, 241, 84, 0.8);
-		stroke-width: 4px;
+		stroke-width: 8px;
+		animation: blinking 0.8s linear infinite alternate-reverse;
 
 	}
 	.grid {
 		stroke: #b5b3b3;
+	}
+
+	@keyframes blinking {
+	  from { stroke-opacity: 1; }
+	  to { stroke-opacity: 0.1; }
 	}
 </style>
