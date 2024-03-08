@@ -17,6 +17,7 @@
   },
   "type": "module",
   "dependencies": {
+    "compass-mixins": "^0.12.12",
     "d3": "^7.8.5"
   }
 }

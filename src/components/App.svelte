@@ -6,7 +6,7 @@
 </script>
 
 <main>
-  <h1>Optimal Transport Mapping (sub)</h1>
+  <h1>Optimal Transport Mapping</h1>
   <p class='intro'>Wasserstein distance, also known as earth mover's distance, is a measure of distance between two probability distributions, which has a variety of applications in machine learning. This distance is calculated by finding the path that minimizes the total cost of moving one distribution to another, known as the <b>optimal transport map</b>. This problem was first proposed by French mathematician Gaspard Monge in 1781. <br> <br> As an analogy, if we view one distribution <i>X</i> as piles of sand and the other distribution <i>Y</i> as buckets of varying sizes, the objective is to find the most cost efficient way to fill the buckets with the sand, where the cost of each transport is equal to the distance times the weight of the sand.</p>
 
   <h2><i>Optimal Assignment Problem</i></h2>
