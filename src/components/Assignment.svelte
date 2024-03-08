@@ -23,6 +23,85 @@
 		return parseFloat(Math.pow(Math.pow(Math.abs(x[0] - y[0]),2) + Math.pow(Math.abs(x[1] - y[1]),2),0.5).toFixed(2));
 	}
 
+	function angle(a, b) {
+		let theta;
+		if ((b[0] - a[0]) != 0) {
+			let slope = (b[1] - a[1]) / (b[0] - a[0]);
+			theta = Math.atan(slope);
+		} else {
+			theta = Math.PI / 2;
+		}
+		return theta;
+	}
+
+	function newPoint(a, ar, b, br) {
+		let theta = angle(a, b)
+		let xm = Math.abs(Math.cos(theta));
+		let ym = Math.abs(Math.sin(theta));
+
+		let aa = [a[0], a[1]];
+		let bb = [b[0], b[1]];
+
+		// above and to the right
+		if ((bb[0] > aa[0]) && (bb[1] < aa[1])) {
+			aa[0] = aa[0] + (ar * xm);
+			aa[1] = aa[1] - (ar * ym);
+			bb[0] = bb[0] - (br * xm);
+			bb[1] = bb[1] + (br * ym);
+		} 
+
+		// above and to the left
+		else if ((b[0] < a[0]) && (b[1] < a[1])) {
+			aa[0] = aa[0] - (ar * xm);
+			aa[1] = aa[1] - (ar * ym);
+			bb[0] = bb[0] + (br * xm);
+			bb[1] = bb[1] + (br * ym);
+		}
+
+		// below and to the left
+		else if ((b[0] < a[0]) && (b[1] > a[1])) {
+			aa[0] = aa[0] - (ar * xm);
+			aa[1] = aa[1] + (ar * ym);
+			bb[0] = bb[0] + (br * xm);
+			bb[1] = bb[1] - (br * ym);
+		}
+
+		// below and to the right
+		else if ((b[0] > a[0]) && (b[1] > a[1])) {
+			aa[0] = aa[0] + (ar * xm);
+			aa[1] = aa[1] + (ar * ym);
+			bb[0] = bb[0] - (br * xm);
+			bb[1] = bb[1] - (br * ym);
+		}
+
+		// horizontal and to the right
+		else if ((b[0] > a[0]) && (b[1] == a[1])) {
+			aa[0] = aa[0] + (ar * xm);
+        	bb[0] = bb[0] - (br * xm);
+		}
+
+		// horizontal and to the left
+		else if ((b[0] < a[0]) && (b[1] == a[1])) {
+			aa[0] = aa[0] - (ar * xm);
+        	bb[0] = bb[0] + (br * xm);
+		}
+
+		// vertical and to the top
+		else if ((b[0] == a[0]) && (b[1] < a[1])) {
+			aa[1] = aa[1] - (ar * ym);
+        	bb[1] = bb[1] + (br * ym);
+		}
+
+		// vertical and to the bottom
+		else if ((b[0] == a[0]) && (b[1] > a[1])) {
+			aa[1] = aa[1] + (ar * ym);
+        	bb[1] = bb[1] - (br * ym);
+		}
+
+		return [aa, bb];
+	}
+
+	/*
 	function arrowEndPoints(a, ar, b, br) {
 		let endA = a;
 		let endB = b;
@@ -67,6 +146,7 @@
 		}
 		return [endA, endB];
 	}
+	*/
 
 	function reset() {
 		for (let i = 0; i < eqRed.length; i++) {
@@ -360,7 +440,7 @@
 			    	d3.select('#main-plot')
 			    		.append('path')
 			    		.attr('class', 'lines')
-			    		.attr('d', line(arrowEndPoints([xp(data[0]), yp(data[1])], radSize, [xp(eqRed[data[2]][0]), yp(eqRed[data[2]][1])], radSize)))
+			    		.attr('d', line(newPoint([xp(data[0]), yp(data[1])], radSize, [xp(eqRed[data[2]][0]), yp(eqRed[data[2]][1])], radSize)))
 			    		.attr('stroke', '#82675e')
 			    		.attr('stroke-dasharray', '5,5')
 			    		.attr('stroke-width', '2px')

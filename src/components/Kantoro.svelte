@@ -88,8 +88,6 @@
 		return theta;
 	}
 
-	console.log(angle([2, 2], [2, 0]));
-
 	function newPoint(a, ar, b, br) {
 		let theta = angle(a, b)
 		let xm = Math.abs(Math.cos(theta));
@@ -156,7 +154,6 @@
 
 		return [aa, bb];
 	}
-	// console.log(newPoint([2, 2], [2, 0], 0.5, 0.5));
 
 	var sym = d3.symbol().type(d3.symbolTriangle).size(500);
 
