@@ -5,7 +5,7 @@
 	const gridSize = 50;
 	const radSize = gridSize/3;
 	const baseArea = Math.pow(radSize,2) * Math.PI;
-	console.log(baseArea);
+	// console.log(baseArea);
 
 	const xGridData = [];
 	const yGridData = [];

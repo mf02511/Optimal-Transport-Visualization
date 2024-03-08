@@ -5,7 +5,7 @@
 	const gridSize = 50;
 	const radSize = gridSize/3;
 	const baseArea = Math.pow(radSize,2) * Math.PI;
-	console.log(baseArea);
+	// console.log(baseArea);
 
 	const xGridData = [];
 	const yGridData = [];
@@ -31,6 +31,7 @@
 		return [midx, midy];
 	}
 
+	/*
 	function arrowEndPoints(a, ar, b, br) {
 		let endA = a;
 		let endB = b;
@@ -75,6 +76,88 @@
 		}
 		return [endA, endB];
 	}
+	*/
+
+	function angle(a, b) {
+		let theta;
+		if ((b[0] - a[0]) != 0) {
+			let slope = (b[1] - a[1]) / (b[0] - a[0]);
+			theta = Math.atan(slope);
+		} else {
+			theta = Math.PI / 2;
+		}
+		return theta;
+	}
+
+	console.log(angle([2, 2], [2, 0]));
+
+	function newPoint(a, ar, b, br) {
+		let theta = angle(a, b)
+		let xm = Math.abs(Math.cos(theta));
+		let ym = Math.abs(Math.sin(theta));
+
+		let aa = [a[0], a[1]];
+		let bb = [b[0], b[1]];
+
+		// above and to the right
+		if ((bb[0] > aa[0]) && (bb[1] < aa[1])) {
+			aa[0] = aa[0] + (ar * xm);
+			aa[1] = aa[1] - (ar * ym);
+			bb[0] = bb[0] - (br * xm);
+			bb[1] = bb[1] + (br * ym);
+		} 
+
+		// above and to the left
+		else if ((b[0] < a[0]) && (b[1] < a[1])) {
+			aa[0] = aa[0] - (ar * xm);
+			aa[1] = aa[1] - (ar * ym);
+			bb[0] = bb[0] + (br * xm);
+			bb[1] = bb[1] + (br * ym);
+		}
+
+		// below and to the left
+		else if ((b[0] < a[0]) && (b[1] > a[1])) {
+			aa[0] = aa[0] - (ar * xm);
+			aa[1] = aa[1] + (ar * ym);
+			bb[0] = bb[0] + (br * xm);
+			bb[1] = bb[1] - (br * ym);
+		}
+
+		// below and to the right
+		else if ((b[0] > a[0]) && (b[1] > a[1])) {
+			aa[0] = aa[0] + (ar * xm);
+			aa[1] = aa[1] + (ar * ym);
+			bb[0] = bb[0] - (br * xm);
+			bb[1] = bb[1] - (br * ym);
+		}
+
+		// horizontal and to the right
+		else if ((b[0] > a[0]) && (b[1] == a[1])) {
+			aa[0] = aa[0] + (ar * xm);
+        	bb[0] = bb[0] - (br * xm);
+		}
+
+		// horizontal and to the left
+		else if ((b[0] < a[0]) && (b[1] == a[1])) {
+			aa[0] = aa[0] - (ar * xm);
+        	bb[0] = bb[0] + (br * xm);
+		}
+
+		// vertical and to the top
+		else if ((b[0] == a[0]) && (b[1] < a[1])) {
+			aa[1] = aa[1] - (ar * ym);
+        	bb[1] = bb[1] + (br * ym);
+		}
+
+		// vertical and to the bottom
+		else if ((b[0] == a[0]) && (b[1] > a[1])) {
+			aa[1] = aa[1] + (ar * ym);
+        	bb[1] = bb[1] - (br * ym);
+		}
+
+		return [aa, bb];
+	}
+	// console.log(newPoint([2, 2], [2, 0], 0.5, 0.5));
 
 	var sym = d3.symbol().type(d3.symbolTriangle).size(500);
 
@@ -403,7 +486,7 @@
 			    	d3.select('#main-plot-kanto')
 			    		.append('path')
 			    		.attr('class', 'linesK')
-			    		.attr('d', line(arrowEndPoints([xp(data[0]), yp(data[1])], rad(data[2]), [xp(kanRed[data[3]][0]), yp(kanRed[data[3]][1])], rad(kanRed[data[3]][2]))))
+			    		.attr('d', line(newPoint([xp(data[0]), yp(data[1])], rad(data[2]), [xp(kanRed[data[3]][0]), yp(kanRed[data[3]][1])], rad(kanRed[data[3]][2]))))
 			    		.attr('stroke', 'rgba(130, 103, 94, 0.5)')
 			    		.attr('stroke-dasharray', '5,5')
 			    		.attr('stroke-width', '2px')
