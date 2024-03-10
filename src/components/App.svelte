@@ -23,7 +23,9 @@
     </p>
     <IntroGraphic />
     <p>
-    The key is for the company to take into account factors such as the distance and amount of material being transported to calculate the cost of each delivery. Therefore, the most business-sound decision for the company would be to find the path that is the most cost-efficient based on these factors, which is exactly the premise of optimal transport mapping. <b>TRANSITION?? (smthg about following the history of ot)</b>
+    The key is for the company to take into account factors such as the distance and amount of material being transported to calculate the cost of each delivery. Therefore, the most business-sound decision for the company would be to find the path that is the most cost-efficient based on these factors, which is exactly the premise of optimal transport mapping. 
+    <br><br>
+    The following series of interactive simulations introduces the concepts of optimal transport, from the very basic case to the more complex cases. 
     </p>
     <h2><i>Optimal Assignment Problem</i></h2>
     <p>
@@ -50,20 +52,37 @@
     <p>
     Notice that although the Monge problem allows the mapping of multiple points in <i>X</i> to a single point in <i>Y</i>, it only allows for a point <i>x<sub>i</sub></i> to be mapped to single other point <i>y<sub>j</sub></i>. Because of this, there sometimes may be no optimal Monge map between two point sets since the mass conservation constraint cannot be satisfied. 
     <br><br>
-    Then, in the 1940s, Soviet mathematician Leonid Kantorovich proposed the idea of "relaxing" the deterministic nature of the Monge problem, referred to as Kantorovich relaxation. In particular, Kantorovich proposed that mass at a point <i>x<sub>i</sub></i> could be split up and dispatched to different locations. The cost function in this situation is still calculated as mass times distance. Now, the only constraints are the following: 
-   <br>
-   &nbsp;&nbsp;&nbsp;&nbsp;1. the sum of the masses outgoing from a point <i>x<sub>i</sub></i> must be equal to the total mass of that point
-   <br>
-   &nbsp;&nbsp;&nbsp;&nbsp;2. the total amount of mass transported to a point <i>y<sub>j</sub></i> must be equal to the total mass of that point
-   <br><br>
-   Below, once again try to find the optimal transport map by clicking on a blue point to map each highlighted red point to. Each point has a labeled mass, and keep in mind mass splitting when creating the mappings. Once all points have been assigned, check out if the transport map you created is indeed the optimal!
-   </p>
-   <p style="margin-left: 75px;">
-   <b>NOTE:</b> In order to visualize mass splitting, only 1 unit of mass from a red point will be mapped during a single click to a blue point. For example, the first highlighted red point has a mass of 4 units; if you want to distribute 2 of its units to the blue point on to its left, click that blue point two times. The arrow between the two points will have a label with the amount of mass that is currently being transported between them and will update on each clicks. 
-   </p>
+    Then, in the 1940s, Soviet mathematician Leonid Kantorovich proposed the idea of "relaxing" the deterministic nature of the Monge problem, referred to as Kantorovich relaxation. In particular, Kantorovich proposed that mass at a point <i>x<sub>i</sub></i> could be split up and dispatched to different locations. Note that the cost function in this situation is still calculated as mass times distance. Now, the only constraints are the following: 
+    <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;1. the sum of the masses outgoing from a point <i>x<sub>i</sub></i> must be equal to the total mass of that point
+    <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;2. the total amount of mass transported to a point <i>y<sub>j</sub></i> must be equal to the total mass of that point
+    <br><br>
+    Below, once again try to find the optimal transport map by clicking on a blue point to map each highlighted red point to. Each point has a labeled mass, and keep in mind mass splitting when creating the mappings. Once all points have been assigned, check out if the transport map you created is indeed the optimal!
+    </p>
+    <p>
+    <b>NOTE:</b> In order to visualize mass splitting, only 1 unit of mass from a red point will be mapped during a single click to a blue point. For example, the first highlighted red point has a mass of 4 units; if you want to distribute 2 of its units to the blue point on to its left, click that blue point two times. The arrow between the two points will have a label with the amount of mass that is currently being transported between them and will update on each clicks. 
+    </p>
     <Kantoro />
     <br>
+    <h2>With what we've learned...</h2>
+    <p style='line-height: 1.7'>
+    Bringing back the factory-to-store analogy from earlier, click on the 
+    <mark style='background-color: rgba(235, 235, 235, 1); border: #d9bdb2 solid 2px; border-radius: 8px; font-family: "Roboto Condensed", sans-serif; padding: 0.2em;'>&nbsp;&nbsp;transport!!&nbsp;&nbsp;</mark> 
+    button below see the delivery plan that the company decided to implement based on their newly gained knowledge about optimal transport mapping!
+    </p>
     <Animation />
+    <p>
+    Now, that we've explored the different layers of the optimal transport mapping, hopefully you have a better conceptual understanding of the problem. Note that the examples above are simple data sets to introduce the basics of the problem. In practice, finding the optimal map, and subsequently the Wasserstein distance, is computationally expensive as the size and dimension of the data increases. One ongoing challenge in modern machine learning is finding more efficient ways to calculate the optimal transport map using various methods such as neural networks and different mathematical approaches.
+    </p>
+    <br><br>
+    <p style='text-align: center; font-size: 18px;'>
+    Here are some resources if you want to learn more about the mathematical formulations for optimal transport and Wasserstein distance:
+    <br>
+    <a href='https://doi.org/10.48550/arXiv.1803.00567'>Computational Optimal Transport, G. Peyré and M. Cuturi (2018)</a>
+    <br>
+    <a href='https://www.damtp.cam.ac.uk/research/cia/files/teaching/Optimal_Transport_Notes.pdf'>Introduction to Optimal Transport, M. Thorpe (2018)</a>
+    </p>
   </div>
 </main>
 
