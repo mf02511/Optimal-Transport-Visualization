@@ -23,7 +23,7 @@ let play = 0;
 	>
 		<rect
 			class={play===0 ? 'animateButtonRect': 'disabledRect'}
-			x='45%'
+			x='700'
 			y='51%'
 			height='45'
 			width='150'
@@ -34,9 +34,9 @@ let play = 0;
 		/>
 		<text
 			class={play===0 ? 'animateButtonText': 'disabledText'}
-			x='50%'
+			x='717'
 			y='80%'
-			text-anchor='middle'
+			text-anchor='left'
 			style='font-family: "Roboto Condensed", sans-serif; font-size: 28px'
 		>
 			transport!!
@@ -51,7 +51,7 @@ let play = 0;
 	>
 		<circle
 			class={play===1 ? 'resetAnimate':'disabledCircle'}
-			cx='58%'
+			cx='890'
 			cy='75%'
 			r='20'
 			fill='rgba(235, 235, 235, 0.7)'
@@ -60,7 +60,7 @@ let play = 0;
   		/>
 		<text
 			class={play===1 ? 'resetAnimateText':'disabledText'}
-			x='58%'
+			x='890'
 			y='82%'
 			text-anchor='middle'
 			style='font-size: 30px'
