@@ -3,10 +3,10 @@
   import Assignment from './Assignment.svelte';
   import Monge from './Monge.svelte';
   import Kantoro from './Kantoro.svelte';
+  import Animation from './Animation.svelte';
+  import IntroGraphic from './IntroGraphic.svelte';
 
-  $: line = d3.line()
-              .x(d => d[0])
-              .y(d => d[1]);
+  
 
   $: console.log()
 </script>
@@ -102,6 +102,8 @@
   <p>
   smthg smthg about 'not strictly in integer increments'
   </p>
+    <br>
+    <Animation />
   </div>
 </main>
 
