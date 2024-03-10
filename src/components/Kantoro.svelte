@@ -213,7 +213,7 @@
 		totalCostK = 0;
 		distArrK = [];
 		weightArrK = [];
-		textYK = 50;
+		textYK = 80;
 		failedK = 0;
 		d3.select('#cost-kanto')
 			.selectAll('.distsK')
@@ -235,7 +235,7 @@
 		totalCostK = 0;
 		distArrK = [];
 		weightArrK = [];
-		textYK = 50;
+		textYK = 80;
 		iK = 0;
 		highlightedK = 0;
 		optK = 13.94;
@@ -248,10 +248,10 @@
 		totalCostK = 0;
 		distArrK = [];
 		weightArrK = [];
-		textYK = 50;
+		textYK = 80;
 		iK = 0;
 		highlightedK = 0;
-		optK = 19.7;
+		optK = 36.47;
 	} else {
 		kanRed = [[2, 3, 4, 1, 4], [7, 5, 3, 0, 3], [10, 6, 3, 0, 3]];
 		kanBlue = [[4, 5, 2, -1, 2, 0], [5, 2, 1, -1, 1, 1], [6, 9, 2, -1, 2, 2], [9, 8, 3, -1, 3, 3], [13, 5, 2, -1, 2, 4]];
@@ -261,10 +261,10 @@
 		totalCostK = 0;
 		distArrK = [];
 		weightArrK = [];
-		textYK = 50;
+		textYK = 80;
 		iK = 0;
 		highlightedK = 0;
-		optK = 31.16;
+		optK = 35.93;
 	}
 
 	
@@ -284,31 +284,32 @@
 	<svg
 		width = {1000}
 		height = {50}
-		class='buttonsK'
+		class='buttonBar'
 	>
   		<g
+  			class='buttonsK'
   			on:click={(event) => {
   					if (N === 0) {
   						return;
   					} else {
   						N--;
   						if (N === 0) {
-  							d3.select('.buttonsK')
+  							d3.selectAll('.buttonsK')
   							.selectAll('.prevK')
   							.attr('fill', 'lightgrey')
   							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
-	  						d3.select('.buttonsK')
+	  						d3.selectAll('.buttonsK')
 	  							.selectAll('.prev-textK')
 	  							.attr('fill', 'rgba(235, 235, 235, 0.7)');
   						}
   						
-  						d3.select('.buttonsK')
+  						d3.selectAll('.buttonsK')
   							.selectAll('.nextK')
   							.attr('fill', 'rgba(235, 235, 235, 0.7)')
   							.attr('stroke', '#d9bdb2');
 
-						d3.select('.buttonsK')
+						d3.selectAll('.buttonsK')
 							.selectAll('.next-textK')
 							.attr('fill', '#d9bdb2');
 						reset();
@@ -336,6 +337,7 @@
   			</text>
   		</g>
 		<g
+			class='buttonsK'
   			on:click={(event) => {
 					reset();
 				}}
@@ -359,6 +361,7 @@
   			</text>
   		</g>
   		<g
+  			class='buttonsK'
   			on:click={(event) => {
   					if (N === 2) {
   						return;
@@ -366,23 +369,23 @@
   						N++;
 
   						if (N === 2) {
-	  						d3.select('.buttonsK')
+	  						d3.selectAll('.buttonsK')
 	  							.selectAll('.nextK')
 	  							.attr('fill', 'lightgrey')
 	  							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
-							d3.select('.buttonsK')
+							d3.selectAll('.buttonsK')
 								.selectAll('.next-textK')
 								.attr('fill', 'rgba(235, 235, 235, 0.7)');
   						}
   						
 
-						d3.select('.buttonsK')
+						d3.selectAll('.buttonsK')
 	  							.selectAll('.prevK')
 	  							.attr('fill', 'rgba(235, 235, 235, 0.7)')
 	  							.attr('stroke', '#d9bdb2');
 
-						d3.select('.buttonsK')
+						d3.selectAll('.buttonsK')
 							.selectAll('.prev-textK')
 							.attr('fill', '#d9bdb2');
 						reset();
@@ -476,6 +479,7 @@
 	  {/each}
 	  {#each kanBlue as data}
 	  	<g
+	  		class='bluePoint'
 	  		on:click={(event) => {
 		    	if (data[4] > 0) {
 		    		data[4]--;
@@ -577,6 +581,14 @@
 		>
 			cost:
 		</text>
+		<text
+			x=15
+			y=70
+			font-weight='400'
+			font-size='24px'
+		>
+			&sum;(distance(i,j) * mass(i,j))=
+		</text>
 
 		{#if iK == totalWeight}
 			<text
@@ -625,11 +637,17 @@
 		padding: 0;
 	}
 
-	.buttonsK {
+	.buttonBar {
 		display: block;
 		margin: auto;
 		fill: #3b2923;
 		font-size: 28px;
+	}
+	.buttonsK:hover {
+		cursor: pointer;
+	}
+	.bluePoint:hover {
+		cursor: pointer;
 	}
 	.main-plot {
 	  	height: auto;

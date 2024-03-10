@@ -16,39 +16,41 @@ let play = 0;
 	height='100'
 >
 	<g
-		class='animateButton'
+		class={play===0 ? 'animateButton': 'disabled'}
 		on:click={(event)=>{
 			play=1;
 		}}
 	>
 		<rect
-  				x='45%'
-  				y='51%'
-  				height='45'
-  				width='150'
-  				rx='15'
-  				stroke='#d9bdb2'
-  				stroke-width='3px'
-  				fill='rgba(235, 235, 235, 0.7)'
+			class={play===0 ? 'animateButtonRect': 'disabledRect'}
+			x='45%'
+			y='51%'
+			height='45'
+			width='150'
+			rx='15'
+			stroke='#d9bdb2'
+			stroke-width='3px'
+			fill='rgba(235, 235, 235, 0.7)'
 		/>
 		<text
+			class={play===0 ? 'animateButtonText': 'disabledText'}
 			x='50%'
 			y='80%'
 			text-anchor='middle'
-			style='fill: #3b2923; font-family: "Roboto Condensed", sans-serif; font-size: 28px'
+			style='font-family: "Roboto Condensed", sans-serif; font-size: 28px'
 		>
 			transport!!
 		</text>
 	</g>
 
 	<g
-		class='resetAnimate'
+		class={play===1 ? 'resetAnimate':'disabled'}
 		on:click={(event)=>{
 			play=0;
 		}}
 	>
 		<circle
-			
+			class={play===1 ? 'resetAnimate':'disabledCircle'}
 			cx='58%'
 			cy='75%'
 			r='20'
@@ -57,10 +59,11 @@ let play = 0;
   			stroke-width='3px'
   		/>
 		<text
+			class={play===1 ? 'resetAnimateText':'disabledText'}
 			x='58%'
 			y='82%'
 			text-anchor='middle'
-			style='fill: #3b2923; font-size: 30px'
+			style='font-size: 30px'
 		>
 			&#8635;
 		</text>
@@ -334,6 +337,36 @@ let play = 0;
 	.arrow {
 		opacity: 0;
 	}
+	.animateButtonRect {
+		fill: rgba(235, 235, 235, 0.7);
+		stroke: #d9bdb2;
+	}
+	.animateButtonText {
+		fill: #3b2923;
+	}
+	.animateButton:hover {
+		font-weight: 800;
+		cursor: pointer;
+	}
+	.resetAnimate:hover {
+		font-weight: 800;
+		cursor: pointer;
+	}
+	.resetAnimateText {
+		fill: #3b2923;
+	}
+	.disabledCircle {
+		fill: lightgrey;
+		stroke: rgba(235, 235, 235, 0.7);
+	}
+	.disabledText {
+		fill: rgba(235, 235, 235, 0.7);
+	}
+	.disabledRect {
+		fill: lightgrey;
+		stroke: rgba(235, 235, 235, 0.7);
+	}
+
 	.boxAA {
 		width: 50px;
 		transform: translate(500px, 0px);

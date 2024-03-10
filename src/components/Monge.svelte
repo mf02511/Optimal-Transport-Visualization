@@ -197,7 +197,7 @@
 		totalCostM = 0;
 		distArrM = [];
 		weightArrM = [];
-		textYM = 50;
+		textYM = 80;
 		failedM = 0;
 		d3.select('#cost-monge')
 			.selectAll('.distsM')
@@ -216,7 +216,7 @@
 		totalCostM = 0;
 		distArrM = [];
 		weightArrM = [];
-		textYM = 50;
+		textYM = 80;
 		iM = -1;
 		highlightedM = 0;
 		optM = 16.84;
@@ -226,7 +226,7 @@
 		totalCostM = 0;
 		distArrM = [];
 		weightArrM = [];
-		textYM = 50;
+		textYM = 80;
 		iM = -1;
 		highlightedM = 0;
 		optM = 19.7;
@@ -237,7 +237,7 @@
 		totalCostM = 0;
 		distArrM = [];
 		weightArrM = [];
-		textYM = 50;
+		textYM = 80;
 		iM = -1;
 		highlightedM = 0;
 		optM = 31.16;
@@ -259,11 +259,12 @@
 		&nbsp;&nbsp;&nbsp; map the highlighted <span style='color: #da7454'>red</span> point to a <span style='color: #7685c0'>blue</span> point:
 	</p>
 	<svg
+		class='buttonBar'
 		width = {1000}
 		height = {50}
-		class='buttonsM'
 	>
   		<g
+  			class='buttonsM'
   			on:click={(event) => {
   					if (N === 0) {
   						return;
@@ -313,6 +314,7 @@
   			</text>
   		</g>
 		<g
+			class='buttonsM'
   			on:click={(event) => {
 					reset();
 				}}
@@ -337,6 +339,7 @@
   			</text>
   		</g>
   		<g
+  			class='buttonsM'
   			on:click={(event) => {
   					if (N === 2) {
   						return;
@@ -344,23 +347,23 @@
   						N++;
 
   						if (N === 2) {
-	  						d3.select('.buttonsM')
+	  						d3.selectAll('.buttonsM')
 	  							.selectAll('.nextM')
 	  							.attr('fill', 'lightgrey')
 	  							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
-							d3.select('.buttonsM')
+							d3.selectAll('.buttonsM')
 								.selectAll('.next-textM')
 								.attr('fill', 'rgba(235, 235, 235, 0.7)');
   						}
   						
 
-						d3.select('.buttonsM')
+						d3.selectAll('.buttonsM')
 	  							.selectAll('.prevM')
 	  							.attr('fill', 'rgba(235, 235, 235, 0.7)')
 	  							.attr('stroke', '#d9bdb2');
 
-						d3.select('.buttonsM')
+						d3.selectAll('.buttonsM')
 							.selectAll('.prev-textM')
 							.attr('fill', '#d9bdb2');
 						reset();
@@ -453,6 +456,7 @@
 	  {/each}
 	  {#each monBlue as data}
 	  	<g
+	  		class='bluePoint'
 	  		on:click={(event) => {
 		    	if (data[4] > 0 && monRed[highlightedM][2] <= data[4]) {
 		    		data[4]-=monRed[highlightedM][2];
@@ -552,6 +556,14 @@
 		>
 			cost:
 		</text>
+		<text
+			x=15
+			y=70
+			font-weight='400'
+			font-size='24px'
+		>
+			&sum;(distance(i,j) * mass(i))=
+		</text>
 
 		{#if iM === monRed.length - 1}
 			<text
@@ -600,11 +612,17 @@
 		padding: 0;
 	}
 
-	.buttonsM {
+	.buttonBar {
 		display: block;
 		margin: auto;
 		fill: #3b2923;
 		font-size: 28px;
+	}
+	.buttonsM:hover {
+		cursor: pointer;
+	}
+	.bluePoint:hover {
+		cursor: pointer;
 	}
 	.main-plot {
 	  	height: auto;

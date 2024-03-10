@@ -164,7 +164,7 @@
 		i = -1;
 		totalCost = 0;
 		costArr = [];
-		textY = 50;
+		textY = 80;
 		failed = 0;
 		d3.select('#cost')
 			.selectAll('.dists')
@@ -201,7 +201,7 @@
 		eqBlue = [[4, 5, -1], [10, 5, -1]];
 		totalCost = 0;
 		costArr = [];
-		textY = 50;
+		textY = 80;
 		i = -1;
 		highlighted = 0;
 		opt = 8.48;
@@ -211,7 +211,7 @@
 		eqBlue = [[10, 6, -1], [9, 3, -1], [3, 7, -1]];
 		totalCost = 0;
 		costArr = [];
-		textY = 50;
+		textY = 80;
 		i = -1;
 		highlighted = 0;
 		opt = 10.89;
@@ -235,29 +235,30 @@
 	<svg
 		width = {1000}
 		height = {50}
-		class='buttons'
+		class='buttonBar'
 	>
   		<g
+  			class='buttons'
   			on:click={(event) => {
   					if (N === 0) {
   						return;
   					} else {
   						N--;
-  						d3.select('.buttons')
+  						d3.selectAll('.buttons')
   							.selectAll('.prev')
   							.attr('fill', 'lightgrey')
   							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
-  						d3.select('.buttons')
+  						d3.selectAll('.buttons')
   							.selectAll('.prev-text')
   							.attr('fill', 'rgba(235, 235, 235, 0.7)');
 
-  						d3.select('.buttons')
+  						d3.selectAll('.buttons')
   							.selectAll('.next')
   							.attr('fill', 'rgba(235, 235, 235, 0.7)')
   							.attr('stroke', '#d9bdb2');
 
-						d3.select('.buttons')
+						d3.selectAll('.buttons')
 							.selectAll('.next-text')
 							.attr('fill', '#d9bdb2');
 						reset();
@@ -285,6 +286,7 @@
   		</g>
 
   		<g
+  			class='buttons'
   			on:click={(event) => {
 					reset();
 				}}
@@ -308,26 +310,27 @@
   			</text>
   		</g>
   		<g
+  			class='buttons'
   			on:click={(event) => {
   					if (N === 1) {
   						return;
   					} else {
   						N++;
-  						d3.select('.buttons')
+  						d3.selectAll('.buttons')
   							.selectAll('.next')
   							.attr('fill', 'lightgrey')
   							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
-						d3.select('.buttons')
+						d3.selectAll('.buttons')
 							.selectAll('.next-text')
 							.attr('fill', 'rgba(235, 235, 235, 0.7)');
 
-						d3.select('.buttons')
+						d3.selectAll('.buttons')
 	  							.selectAll('.prev')
 	  							.attr('fill', 'rgba(235, 235, 235, 0.7)')
 	  							.attr('stroke', '#d9bdb2');
 
-						d3.select('.buttons')
+						d3.selectAll('.buttons')
 							.selectAll('.prev-text')
 							.attr('fill', '#d9bdb2');
 						reset();
@@ -410,7 +413,7 @@
 	  {/each}
 	  {#each eqBlue as data}
 		  <circle
-		  	class = 'static'
+		  	class = 'bluePoint'
 		    cx={xp(data[0])}
 		    cy={yp(data[1])}
 		    fill='#7685c0'
@@ -445,7 +448,6 @@
 			    		.attr('stroke-dasharray', '5,5')
 			    		.attr('stroke-width', '2px')
 			    		.attr('marker-start', 'url(#arrow)')
-			    	return costArr;
 		    	} else {
 		    		return;
 		    	}
@@ -467,6 +469,14 @@
 			font-size='30px'
 		>
 			cost:
+		</text>
+		<text
+			x=15
+			y=70
+			font-weight='400'
+			font-size='24px'
+		>
+			&sum;(distance(i,j))=
 		</text>
 
 		{#if i === eqRed.length - 1}
@@ -516,11 +526,17 @@
 		padding: 0;
 	}
 
-	.buttons {
+	.buttonBar {
 		display: block;
 		margin: auto;
 		fill: #3b2923;
 		font-size: 28px;
+	}
+	.buttons:hover {
+		cursor: pointer;
+	}
+	.bluePoint:hover {
+		cursor: pointer;
 	}
 	.main-plot {
 	  	height: auto;

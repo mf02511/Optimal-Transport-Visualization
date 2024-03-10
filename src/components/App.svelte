@@ -15,56 +15,20 @@
   <img src='truck.svg' id='title-truck'/>
   <h1>Optimal Transport Mapping</h1>
   <div id='main-body'>
-    <p class='intro'>
-    Wasserstein distance, also known as Earth Mover's Distance, is a measure of distance between two probability distributions, which has a variety of applications in modern machine learning. This distance is calculated by finding the path that minimizes the total cost of transferring mass from one distribution to the other, referred to as the <b>optimal transport map</b>. This problem was first introduced by French mathematician Gaspard Monge in 1781. 
-    <br><br> 
-    As an analogy, suppose we view one distribution <i>X</i> as as a collection of factories from a single company and the other distribution <i>Y</i> as a collection of stores that receive shipments from the factories. Suppose we also have a cost function <i>c</i> such that <i>c(x<sub>i</sub>,y<sub>j</sub>)</i> calculates the cost of transporting one shipment of material from factory <i>x<sub>i</sub></i> to store <i>y<sub>j</sub></i>.
-    Below is an illustration of one possible path of deliveries between the factories and the stores that the company could choose. However, with multiple other potential delivery paths between the factories and the stores, a dilemma arises: how should the company decide which path to choose?
-    </p>
+    <p class='intro'>Wasserstein distance, also known as earth mover's distance, is a measure of distance between two probability distributions, which has a variety of applications in machine learning. This distance is calculated by finding the path that minimizes the total cost of moving one distribution to another, known as the <b>optimal transport map</b>. This problem was first proposed by French mathematician Gaspard Monge in 1781. <br> <br> As an analogy, if we view one distribution <i>X</i> as piles of sand and the other distribution <i>Y</i> as buckets of varying sizes, the objective is to find the most cost efficient way to fill the buckets with the sand, where the cost of each transport is equal to the distance times the weight of the sand.</p>
     <IntroGraphic />
-    <p>
-      The key is for the company to take into account factors such as the distance and amount of material being transported to calculate the cost of each delivery. Therefore, the most business-sound decision for the company would be to find the path that is the most cost-efficient based on these factors, which is exactly the premise of optimal transport mapping. <b>TRANSITION?? (smthg about following the history of ot)</b>
-    </p>
     <h2><i>Optimal Assignment Problem</i></h2>
-    <p>Let's start by looking at the simplest case of optimal transport known as the optimal assignment problem. In this sitation, we consider 2 point sets, <i>X</i> and <i>Y</i>, both with <i>n</i> points of the same weight. Due to the uniform distribution of weights, when transporting <i>X</i> to <i>Y</i>, we only need to account for the Euclidean distance between the points when calculating the cost. In this situation, finding the optimal transport map between <i>X</i> and <i>Y</i> is equivalent to a one-to-one assignment problem where we try to minimize the total distance the points travel. 
-    <br><br> 
-    Below, try to find the optimal assignment by mapping the red point set to the blue point set &mdash; for each highlighted red point, click on a blue point to assign it to and once all points have been assigned, check out if the transport map you created is indeed the optimal!</p>
+    <p>Let's start by looking at a simple case, often referred to as the optimal assignment problem. Consider 2 point sets, <i>X</i> and <i>Y</i>, both with <i>n</i> points of the same weight. Due to the uniform distribution of weights, when transporting <i>X</i> to <i>Y</i>, we only need to account for the distance between points when calculating the cost. In this situation, finding the optimal transport map between <i>X</i> and <i>Y</i> is equivalent to a one-to-one assignment problem where we try to minimize the total distance the points travel. <br><br> Below, try to find the optimal assignment by mapping the red point set to the blue point set &mdash; for each highlighted red point, click on a blue point to assign it to and once all points have been assigned, check out if the transport map you created is indeed the optimal!</p>
     <br>
     
     <Assignment />
 
     <h2><i>Monge Problem</i></h2>
-    <p>
-    Now let's consider a more general case of the previous problem where the weights of all points in <i>X</i> and <i>Y</i> are not necessarily equal and do not necessarily have the same number of points. This case of optimal transport is known as the Monge problem. Since the weights of all points are no longer equal, we cannot simply do a one-to-one assignment and minimize only the distance between the points. We must now also take into account the individual weights of each point when finding the optimal map, so now our cost is calculated as mass times distance. 
-    <br><br>
-    As in the previous problem, there is a requirement that the total mass of the points in <i>X</i> must be equal to the total mass of points in <i>Y</i>. However, in addition, we now also have the constraint of mass conservation: multiple points in <i>X</i> can be mapped to the same point in <i>Y</i> so long as the sum of the mass of the <i>X</i> points is equal to the mass of the <i>Y</i> point. 
-    <br><br>
-    Below, again try to find the optimal Monge map by clicking on a blue point to map each highlighted red point to. Note that each point has a labeled mass, and keep in mind the added constraint of mass conservation when creating the mappings. Once all points have been assigned, check out if the transport map you created is indeed the optimal!
-    </p>
+    <p>Now let's consider a more general case where the weights of all points in <i>X</i> and <i>Y</i> are not necessarily equal and do not necessarily have the same number of points, known as the Monge problem. Since the weights of all points are no longer equal, we cannot simply do a one-to-one assignment and minimize only the distance. We must now also take into account the individual weights of each point when finding the optimal map. The main constraint in this situation is mass conservation: the total mass of the points in <i>X</i> must be equal to the total mass of points in <i>Y</i>.</p>
     <br>
     <Monge />
-
-    <h2><i>Kantorovich Relaxation</i></h2>
-    <p>
-    Notice that although the Monge problem allows the mapping of multiple points in <i>X</i> to a single point in <i>Y</i>, it only allows for a point <i>x<sub>i</sub></i> to be mapped to single other point <i>y<sub>j</sub></i>. Because of this, there sometimes may be no optimal Monge map between two point sets since the mass conservation constraint cannot be satisfied. 
-    <br><br>
-    Then, in the 1940s, Soviet mathematician Leonid Kantorovich proposed the idea of "relaxing" the deterministic nature of the Monge problem, referred to as Kantorovich relaxation. In particular, Kantorovich proposed that mass at a point <i>x<sub>i</sub></i> could be split up and dispatched to different locations. The cost function in this situation is still calculated as mass times distance. Now, the only constraints are the following: 
-   <br>
-   &nbsp;&nbsp;&nbsp;&nbsp;1. the sum of the masses outgoing from a point <i>x<sub>i</sub></i> must be equal to the total mass of that point
-   <br>
-   &nbsp;&nbsp;&nbsp;&nbsp;2. the total amount of mass transported to a point <i>y<sub>j</sub></i> must be equal to the total mass of that point
-   <br><br>
-   Below, once again try to find the optimal transport map by clicking on a blue point to map each highlighted red point to. Each point has a labeled mass, and keep in mind mass splitting when creating the mappings. Once all points have been assigned, check out if the transport map you created is indeed the optimal!
-   </p>
-   <p style="margin-left: 75px;">
-   <b>NOTE:</b> In order to visualize mass splitting, only 1 unit of mass from a red point will be mapped during a single click to a blue point. For example, the first highlighted red point has a mass of 4 units; if you want to distribute 2 of its units to the blue point on to its left, click that blue point two times. The arrow between the two points will have a label with the amount of mass that is currently being transported between them and will update on each clicks. 
-   </p>
     <br>
     <Kantoro />
-  
-  <p>
-  smthg smthg about 'not strictly in integer increments'
-  </p>
     <br>
     <Animation />
   </div>
