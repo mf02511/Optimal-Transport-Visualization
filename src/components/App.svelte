@@ -3,10 +3,10 @@
   import Assignment from './Assignment.svelte';
   import Monge from './Monge.svelte';
   import Kantoro from './Kantoro.svelte';
+  import Animation from './Animation.svelte';
+  import IntroGraphic from './IntroGraphic.svelte';
 
-  $: line = d3.line()
-              .x(d => d[0])
-              .y(d => d[1]);
+  
 
   $: console.log()
 </script>
@@ -16,6 +16,8 @@
   <h1>Optimal Transport Mapping</h1>
   <div id='main-body'>
     <p class='intro'>Wasserstein distance, also known as earth mover's distance, is a measure of distance between two probability distributions, which has a variety of applications in machine learning. This distance is calculated by finding the path that minimizes the total cost of moving one distribution to another, known as the <b>optimal transport map</b>. This problem was first proposed by French mathematician Gaspard Monge in 1781. <br> <br> As an analogy, if we view one distribution <i>X</i> as piles of sand and the other distribution <i>Y</i> as buckets of varying sizes, the objective is to find the most cost efficient way to fill the buckets with the sand, where the cost of each transport is equal to the distance times the weight of the sand.</p>
+    <IntroGraphic />
+    <!--
     <div class='intro-images'>
       <img src='factory.svg' class='factory' id='factoryA'/>
       <img src='store.svg' class='store' id='storeA'/>
@@ -54,6 +56,7 @@
       <img src='truck.svg' class='truck' id='truckB'/>
       <img src='truck.svg' class='truck' id='truckC'/>
     </div>
+    -->
     <h2><i>Optimal Assignment Problem</i></h2>
     <p>Let's start by looking at a simple case, often referred to as the optimal assignment problem. Consider 2 point sets, <i>X</i> and <i>Y</i>, both with <i>n</i> points of the same weight. Due to the uniform distribution of weights, when transporting <i>X</i> to <i>Y</i>, we only need to account for the distance between points when calculating the cost. In this situation, finding the optimal transport map between <i>X</i> and <i>Y</i> is equivalent to a one-to-one assignment problem where we try to minimize the total distance the points travel. <br><br> Below, try to find the optimal assignment by mapping the red point set to the blue point set &mdash; for each highlighted red point, click on a blue point to assign it to and once all points have been assigned, check out if the transport map you created is indeed the optimal!</p>
     <br>
@@ -66,6 +69,8 @@
     <Monge />
     <br>
     <Kantoro />
+    <br>
+    <Animation />
   </div>
 </main>
 
