@@ -21,44 +21,7 @@
     As an analogy, suppose we view one distribution <i>X</i> as as a collection of factories from a single company and the other distribution <i>Y</i> as a collection of stores that receive shipments from the factories. Suppose we also have a cost function <i>c</i> such that <i>c(x<sub>i</sub>,y<sub>j</sub>)</i> calculates the cost of transporting one shipment of material from factory <i>x<sub>i</sub></i> to store <i>y<sub>j</sub></i>.
     Below is an illustration of one possible path of deliveries between the factories and the stores that the company could choose. However, with multiple other potential delivery paths between the factories and the stores, a dilemma arises: how should the company decide which path to choose?
     </p>
-    <div class='intro-images'>
-      <img src='factory.svg' class='factory' id='factoryA'/>
-      <img src='store.svg' class='store' id='storeA'/>
-      <svg
-        width= '1500'
-        height='450'
-      >
-      
-        <path
-          class='intro-line'
-          d={line([[350, 100], [950, 90]])}
-          stroke='#82675e'
-          stroke-dasharray='5,5'
-          stroke-width='2px'
-        />
-
-        <path
-          class='intro-line'
-          d={line([[350, 100], [1100, 370]])}
-          stroke='#82675e'
-          stroke-dasharray='5,5'
-          stroke-width='2px'
-        />
-        <path
-          class='intro-line'
-          d={line([[200, 335], [1300, 180]])}
-          stroke='#82675e'
-          stroke-dasharray='5,5'
-          stroke-width='2px'
-        />
-      </svg>
-      <img src='factory.svg' class='factory' id='factoryB'/>
-      <img src='store.svg' class='store' id='storeB'/>
-      <img src='store.svg' class='store' id='storeC'/>
-      <img src='truck.svg' class='truck' id='truckA'/>
-      <img src='truck.svg' class='truck' id='truckB'/>
-      <img src='truck.svg' class='truck' id='truckC'/>
-    </div>
+    <IntroGraphic />
     <p>
       The key is for the company to take into account factors such as the distance and amount of material being transported to calculate the cost of each delivery. Therefore, the most business-sound decision for the company would be to find the path that is the most cost-efficient based on these factors, which is exactly the premise of optimal transport mapping. <b>TRANSITION?? (smthg about following the history of ot)</b>
     </p>
