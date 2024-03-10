@@ -230,7 +230,7 @@
 		class='instruction'
 		style='color: #3b2923; font-size: 20px; font-family: "Roboto Condensed", sans-serif'
 	>
-		&nbsp;&nbsp;&nbsp; map the highlighted <span style='color: #da7454'>red</span> point to a <span style='color: #7685c0'>blue</span> point:
+		map the highlighted <span style='color: #da7454'>red</span> point to a <span style='color: #7685c0'>blue</span> point:
 	</p>
 	<svg
 		width = {1000}
@@ -521,7 +521,9 @@
 		width: 70%;
 		font-family: "Roboto Condensed", sans-serif;
 	}
-	
+	p {
+		margin-left: 2%;
+	}
 	text {
 		padding: 0;
 	}

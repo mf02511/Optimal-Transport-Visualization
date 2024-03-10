@@ -279,7 +279,9 @@
 		class='instruction'
 		style='color: #3b2923; font-size: 20px; font-family: "Roboto Condensed", sans-serif'
 	>
-		&nbsp;&nbsp;&nbsp; map the highlighted <span style='color: #da7454'>red</span> point to a <span style='color: #7685c0'>blue</span> point:
+		map the highlighted <span style='color: #da7454'>red</span> point to a <span style='color: #7685c0'>blue</span> point:
+		<br>
+		<span style='font-size: 16px'><i>note: transport the mass of the red points by 1 with each click.</i></span>
 	</p>
 	<svg
 		width = {1000}
@@ -632,7 +634,9 @@
 		width: 90%;
 		font-family: "Roboto Condensed", sans-serif;
 	}
-	
+	p {
+		margin-left: 15%;
+	}
 	text {
 		padding: 0;
 	}
