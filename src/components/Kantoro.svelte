@@ -1,7 +1,5 @@
 <script>
 	import * as d3 from 'd3';
-	import { interpolateLab } from 'd3-interpolate';
-    import { tweened } from 'svelte/motion';
 	const width = 700;
 	const height = 500;
 	const gridSize = 50;
@@ -25,6 +23,59 @@
 	function dist(x, y) {
 		return parseFloat(Math.pow(Math.pow(Math.abs(x[0] - y[0]),2) + Math.pow(Math.abs(x[1] - y[1]),2),0.5).toFixed(2));
 	}
+
+	function midpoint(a, b) {
+		let midx = (b[0] + a[0]) / 2;
+		let midy = (b[1] + a[1]) / 2;
+		return [midx, midy];
+	}
+
+	/*
+	function arrowEndPoints(a, ar, b, br) {
+		let endA = a;
+		let endB = b;
+		if (a[0] < b[0]) {
+			if (a[1] == b[1]){
+				endA[0] += ar;
+				endB[0] -= br;
+			}else if (a[1] < b[1]) {
+				endA[0] += ar/1.414;
+				endB[0] -= br/1.414;
+				endA[1] += ar/1.414;
+				endB[1] -= br/1.414;
+			} else {
+				endA[0] += ar/1.414;
+				endB[0] -= br/1.414;
+				endA[1] -= ar/1.414;
+				endB[1] += br/1.414;
+			}
+		} else if (a[0] > b[0]) {
+			if (a[1] == b[1]){
+				endA[0] -= ar;
+				endB[0] += br;
+			}else if (a[1] < b[1]) {
+				endA[0] -= ar/1.414;
+				endB[0] += br/1.414;
+				endA[1] += ar/1.414;
+				endB[1] -= br/1.414;
+			} else {
+				endA[0] -= ar/1.414;
+				endB[0] += br/1.414;
+				endA[1] -= ar/1.414;
+				endB[1] += br/1.414;
+			}
+		} else {
+			if (a[1] < b[1]) {
+				endA[1] += ar;
+				endB[1] -= br;
+			} else if (a[1] > b[1]) {
+				endA[1] -= ar;
+				endB[1] += br;
+			}
+		}
+		return [endA, endB];
+	}
+	*/
 
 	function angle(a, b) {
 		let theta;
@@ -112,136 +163,108 @@
 	  .x(d => d[0])
 	  .y(d => d[1]);
 
-	let monRed;
-	let monBlue;
-	let totalCostM;
-	let distArrM;
-	let weightArrM;	
-	let textYM;
-	let iM;
-	let highlightedM;
-	let optM;
+	let kanRed;
+	let totalWeight;
+	let kanBlue;
+	let transMat;
+	let matId;
+	let totalCostK;
+	let distArrK;
+	let weightArrK;	
+	let textYK;
+	let iK;
+	let highlightedK;
+	let optK;
 
-	let failedM = 0;
+	let failedK = 0;
 
-	$: if (iM === monRed.length - 1 && Math.abs(optM - totalCostM) > 0.01) {
-		failedM = 1;
+	$: if (iK == totalWeight && Math.abs(optK - totalCostK) > 0.01) {
+		failedK = 1;
 	}
 
 	function rad(size) {
 		return radSize * Math.pow(size, 0.5)
 	}
 
-	/*
-	function arrowEndPoints(a, ar, b, br) {
-		let endA = a;
-		let endB = b;
-		if (a[0] < b[0]) {
-			if (a[1] == b[1]){
-				endA[0] += ar;
-				endB[0] -= br;
-			}else if (a[1] < b[1]) {
-				endA[0] += ar/1.414;
-				endB[0] -= br/1.414;
-				endA[1] += ar/1.414;
-				endB[1] -= br/1.414;
-			} else {
-				endA[0] += ar/1.414;
-				endB[0] -= br/1.414;
-				endA[1] -= ar/1.414;
-				endB[1] += br/1.414;
-			}
-		} else if (a[0] > b[0]) {
-			if (a[1] == b[1]){
-				endA[0] -= ar;
-				endB[0] += br;
-			}else if (a[1] < b[1]) {
-				endA[0] -= ar/1.414;
-				endB[0] += br/1.414;
-				endA[1] += ar/1.414;
-				endB[1] -= br/1.414;
-			} else {
-				endA[0] -= ar/1.414;
-				endB[0] += br/1.414;
-				endA[1] -= ar/1.414;
-				endB[1] += br/1.414;
-			}
-		} else {
-			if (a[1] < b[1]) {
-				endA[1] += ar;
-				endB[1] -= br;
-			} else if (a[1] > b[1]) {
-				endA[1] -= ar;
-				endB[1] += br;
-			}
-		}
-		return [endA, endB];
-	}
-	*/
-
 	function reset() {
-		for (let i = 0; i < monRed.length; i++) {
+		totalWeight = 0;
+		for (let i = 0; i < kanRed.length; i++) {
 			if (i === 0) {
-				monRed[i][3] = 1;
+				kanRed[i][3] = 1;
 			} else {
-				monRed[i][3] = 0;
+				kanRed[i][3] = 0;
 			}
+			kanRed[i][4] = kanRed[i][2];
+			totalWeight += kanRed[i][2]
 		}
 
-		for (let i = 0; i < monBlue.length; i++) {
-				monBlue[i][3] = -1;
-				monBlue[i][4] = monBlue[i][2];
+		for (let i = 0; i < kanBlue.length; i++) {
+				kanBlue[i][3] = -1;
+				kanBlue[i][4] = kanBlue[i][2];
 		}
-		highlightedM = 0;
-		iM = -1;
-		totalCostM = 0;
-		distArrM = [];
-		weightArrM = [];
-		textYM = 80;
-		failedM = 0;
-		d3.select('#cost-monge')
-			.selectAll('.distsM')
+
+		for (let i = 0; i < transMat.length; i++) {
+			for (let j = 0; j < transMat[i].length; j++) {
+				transMat[i][j] = 0;
+			}
+		}
+		highlightedK = 0;
+		iK = 0;
+		totalCostK = 0;
+		distArrK = [];
+		weightArrK = [];
+		textYK = 80;
+		failedK = 0;
+		d3.select('#cost-kanto')
+			.selectAll('.distsK')
 			.remove();
-		d3.select('#cost-monge')
-			.selectAll('.fail')
+		d3.select('#main-plot-kanto')
+			.selectAll('.linesK')
 			.remove();
-		d3.select('#main-plot-monge')
-			.selectAll('.linesM')
+		d3.select('#main-plot-kanto')
+			.selectAll('.arrowText')
 			.remove();
 	}
 
 	$: if (N===0) {
-		monRed = [[3, 4, 1, 1], [4, 2, 1, 0], [7, 8, 2, 0], [9, 3, 1, 0]];
-		monBlue = [[5, 4, 3, -1, 3], [10, 5, 2, -1, 2]];
-		totalCostM = 0;
-		distArrM = [];
-		weightArrM = [];
-		textYM = 80;
-		iM = -1;
-		highlightedM = 0;
-		optM = 16.84;
+		kanRed = [[8, 6, 4, 1, 4], [4, 2, 1, 0, 1]];
+		kanBlue = [[5, 4, 3, -1, 3, 0], [10, 5, 2, -1, 2, 1]];
+		transMat = [[0, 0], [0, 0]];
+		matId = [['aa', 'ab'], ['ba', 'bb']];
+		totalWeight = 5;
+		totalCostK = 0;
+		distArrK = [];
+		weightArrK = [];
+		textYK = 80;
+		iK = 0;
+		highlightedK = 0;
+		optK = 13.94;
 	} else if (N===1) {
-		monRed = [[2, 3, 1, 1], [5, 7, 1, 0], [8, 2, 1, 0], [10, 8, 2, 0], [11, 7, 1, 0]];
-		monBlue = [[8, 6, 3, -1, 3], [7, 3, 3, -1, 3]];
-		totalCostM = 0;
-		distArrM = [];
-		weightArrM = [];
-		textYM = 80;
-		iM = -1;
-		highlightedM = 0;
-		optM = 19.7;
-		failedM = 0;
+		kanRed = [[2, 9, 2, 1, 2], [4, 3, 1, 0, 1], [8, 8, 3, 0, 3], [9, 5, 2, 0, 2], [11, 7, 2, 0, 2]];
+		kanBlue = [[11, 4, 4, -1, 4, 0], [7, 2, 3, -1, 3, 1], [5, 7, 3, -1, 3, 2]];
+		transMat = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
+		matId = [['aa', 'ab', 'ac'], ['ba', 'bb', 'bc'], ['ca', 'cb', 'cc'], ['da', 'db', 'dc'], ['ea', 'eb', 'ec']];
+		totalWeight = 10;
+		totalCostK = 0;
+		distArrK = [];
+		weightArrK = [];
+		textYK = 80;
+		iK = 0;
+		highlightedK = 0;
+		optK = 36.47;
 	} else {
-		monRed = [[1, 4, 1, 1], [4, 7, 1, 0], [7, 8, 1, 0], [8, 4, 2, 0], [13, 9, 2, 0]];
-		monBlue = [[3, 9, 2, -1, 2], [9, 5, 2, -1, 2], [5, 1, 3, -1, 3]];
-		totalCostM = 0;
-		distArrM = [];
-		weightArrM = [];
-		textYM = 80;
-		iM = -1;
-		highlightedM = 0;
-		optM = 31.16;
-		failedM = 0;
+		kanRed = [[2, 3, 4, 1, 4], [7, 5, 3, 0, 3], [10, 6, 3, 0, 3]];
+		kanBlue = [[4, 5, 2, -1, 2, 0], [5, 2, 1, -1, 1, 1], [6, 9, 2, -1, 2, 2], [9, 8, 3, -1, 3, 3], [13, 5, 2, -1, 2, 4]];
+		transMat = [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]];
+		matId = [['aa', 'ab', 'ac', 'ad', 'ae'], ['ba', 'bb', 'bc', 'bd', 'be'], ['ca', 'cb', 'cc', 'cd', 'ce']];
+		totalWeight = 10;
+		totalCostK = 0;
+		distArrK = [];
+		weightArrK = [];
+		textYK = 80;
+		iK = 0;
+		highlightedK = 0;
+		optK = 35.93;
 	}
 
 	
@@ -258,45 +281,45 @@
 	>
 		map the highlighted <span style='color: #da7454'>red</span> point to a <span style='color: #7685c0'>blue</span> point:
 		<br>
-		<span style='font-size: 16px'><i>note: take into account the mass of each point.</i></span>
+		<span style='font-size: 16px'><i>note: transport the mass of the red points by 1 with each click.</i></span>
 	</p>
 	<svg
-		class='buttonBar'
 		width = {1000}
 		height = {50}
+		class='buttonBar'
 	>
   		<g
-  			class='buttonsM'
+  			class='buttonsK'
   			on:click={(event) => {
   					if (N === 0) {
   						return;
   					} else {
   						N--;
   						if (N === 0) {
-  							d3.select('.buttonsM')
-  							.selectAll('.prevM')
+  							d3.selectAll('.buttonsK')
+  							.selectAll('.prevK')
   							.attr('fill', 'lightgrey')
   							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
-	  						d3.select('.buttonsM')
-	  							.selectAll('.prev-textM')
+	  						d3.selectAll('.buttonsK')
+	  							.selectAll('.prev-textK')
 	  							.attr('fill', 'rgba(235, 235, 235, 0.7)');
   						}
   						
-  						d3.select('.buttonsM')
-  							.selectAll('.nextM')
+  						d3.selectAll('.buttonsK')
+  							.selectAll('.nextK')
   							.attr('fill', 'rgba(235, 235, 235, 0.7)')
   							.attr('stroke', '#d9bdb2');
 
-						d3.select('.buttonsM')
-							.selectAll('.next-textM')
+						d3.selectAll('.buttonsK')
+							.selectAll('.next-textK')
 							.attr('fill', '#d9bdb2');
 						reset();
   					}
   				}}
   		>
   			<circle
-  				class='prevM'
+  				class='prevK'
   				cx='225'
   				cy='25'
   				r='20'
@@ -306,7 +329,7 @@
   				
   			/>
   			<text
-  				class='prev-textM'
+  				class='prev-textK'
   				x='211.5'
   				y='33'
   				font-size='23px'
@@ -316,11 +339,10 @@
   			</text>
   		</g>
 		<g
-			class='buttonsM'
+			class='buttonsK'
   			on:click={(event) => {
 					reset();
 				}}
-			id='resetM'
   		>	
   			<rect
   				x='300'
@@ -331,7 +353,7 @@
   				stroke='#d9bdb2'
   				stroke-width='3px'
   				fill='rgba(235, 235, 235, 0.7)'
-  				class={failedM === 1 ? 'highlight':'static'}
+  				class={failedK === 1 ? 'highlight':'static'}
   			/>
   			<text
   				x='323'
@@ -341,7 +363,7 @@
   			</text>
   		</g>
   		<g
-  			class='buttonsM'
+  			class='buttonsK'
   			on:click={(event) => {
   					if (N === 2) {
   						return;
@@ -349,24 +371,24 @@
   						N++;
 
   						if (N === 2) {
-	  						d3.selectAll('.buttonsM')
-	  							.selectAll('.nextM')
+	  						d3.selectAll('.buttonsK')
+	  							.selectAll('.nextK')
 	  							.attr('fill', 'lightgrey')
 	  							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
-							d3.selectAll('.buttonsM')
-								.selectAll('.next-textM')
+							d3.selectAll('.buttonsK')
+								.selectAll('.next-textK')
 								.attr('fill', 'rgba(235, 235, 235, 0.7)');
   						}
   						
 
-						d3.selectAll('.buttonsM')
-	  							.selectAll('.prevM')
+						d3.selectAll('.buttonsK')
+	  							.selectAll('.prevK')
 	  							.attr('fill', 'rgba(235, 235, 235, 0.7)')
 	  							.attr('stroke', '#d9bdb2');
 
-						d3.selectAll('.buttonsM')
-							.selectAll('.prev-textM')
+						d3.selectAll('.buttonsK')
+							.selectAll('.prev-textK')
 							.attr('fill', '#d9bdb2');
 						reset();
   					}
@@ -374,16 +396,17 @@
   				}}
   		>
   			<circle
-  				class={(iM === monRed.length - 1 && N < 2 && failedM === 0) ? 'highlight nextM':'static nextM'}
+  				class={(iK == totalWeight && N < 2 && failedK === 0) ? 'highlight nextK':'static nextK'}
   				cx='475'
   				cy='25'
   				r='20'
   				fill='rgba(235, 235, 235, 0.7)'
   				stroke='#d9bdb2'
   				stroke-width='3px'
+
   			/>
   			<text
-  				class='next-textM'
+  				class='next-textK'
   				x='467.5'
   				y='33'
   				font-size='23px'
@@ -397,22 +420,22 @@
 	  width = {width}
 	  height = {height}
 	  class='main-plot'
-	  id='main-plot-monge'
+	  id='main-plot-kanto'
 	  viewbox='0 0 {width} {height}'	
 	>
 	  <defs>
 	    <marker
-	      id="arrow"
+	      id="arrowK"
 	      viewBox="0 0 10 10"
 	      refX="5"
 	      refY="5"
 	      markerWidth="6"
 	      markerHeight="6"
-	      fill="#82675e"
+	      fill='rgba(130, 103, 94)'
 	      orient="auto-start-reverse">
 	      <path 
 	      	d="M 0 0 L 10 5 L 0 10 z" 
-	      	stroke="#82675e"
+	      	stroke="rgba(130, 103, 94)"
 	      />
 	    </marker>
 	  </defs>
@@ -435,7 +458,7 @@
 	      </path>
 	    {/each}
 	  </g>
-	  {#each monRed as data}
+	  {#each kanRed as data}
 	  	<g>
 			<circle
 				class = {data[3] === 1 ? 'highlight':'static'}
@@ -449,75 +472,77 @@
 				y={yp(data[1]) + 8}
 				text-anchor='middle'
 				fill='white'
-				font-size=24px
+				font-size=24
 				font-weight=600
 			>
 				{data[2]}
 			</text>
 		</g>
 	  {/each}
-	  {#each monBlue as data}
+	  {#each kanBlue as data}
 	  	<g
 	  		class='bluePoint'
 	  		on:click={(event) => {
-		    	if (data[4] > 0 && monRed[highlightedM][2] <= data[4]) {
-		    		data[4]-=monRed[highlightedM][2];
-		    		iM++;
-		    		data[3] = highlightedM;
-		    		monRed[highlightedM][3] = 0;
-		    		
-			    	let d = dist([monRed[data[3]][0], monRed[data[3]][1]], [data[0], data[1]]);
-			    	totalCostM += d * monRed[data[3]][2];
-			    	distArrM.push(d);
-			    	weightArrM.push(monRed[data[3]][2]);
-			    	d3.select('#cost-monge')
+		    	if (data[4] > 0) {
+		    		data[4]--;
+		    		iK++;
+		    		data[3] = highlightedK;
+		    		transMat[data[3]][data[5]]++;
+		    		let d = dist([kanRed[data[3]][0], kanRed[data[3]][1]], [data[0], data[1]]);
+			    	totalCostK += d;
+			    	distArrK.push(d);
+			    	weightArrK.push(kanRed[data[3]][2]);
+			    	d3.select('#cost-kanto')
 			    		.append('text')
-			    		.attr('class', 'distsM')
+			    		.attr('class', 'distsK')
 			    		.attr('fill', '#3b2923')
 			    		.attr('x', '270')
-			    		.attr('y', textYM + 30)
+			    		.attr('y', textYK + 30)
 			    		.attr("text-anchor", "end")
 			    		.style('font-size', '24px')
-			    		.text('+' + d.toFixed(2) + ' * ' + monRed[data[3]][2] + ' = ' + (d * monRed[data[3]][2]).toFixed(2))
-			    	textYM += 30;
+			    		.text('+' + d.toFixed(2) + ' * 1 = ' + d.toFixed(2))
+			    	textYK += 30;
 
-			    	d3.select('#main-plot-monge')
+			    	d3.select('#main-plot-kanto')
 			    		.append('path')
-			    		.attr('class', 'linesM')
-			    		.attr('d', line(newPoint([xp(data[0]), yp(data[1])], rad(data[2]), [xp(monRed[data[3]][0]), yp(monRed[data[3]][1])], rad(monRed[data[3]][2]))))
-			    		.attr('stroke', '#82675e')
+			    		.attr('class', 'linesK')
+			    		.attr('d', line(newPoint([xp(data[0]), yp(data[1])], rad(data[2]), [xp(kanRed[data[3]][0]), yp(kanRed[data[3]][1])], rad(kanRed[data[3]][2]))))
+			    		.attr('stroke', 'rgba(130, 103, 94, 0.5)')
 			    		.attr('stroke-dasharray', '5,5')
 			    		.attr('stroke-width', '2px')
-			    		.attr('marker-start', 'url(#arrow)')
+			    		.attr('marker-start', 'url(#arrowK)')
 
-			    	for (let i = 0; i < monBlue.length; i++) {
-			    		let remain = false;
-			    		for (let j=highlightedM; j < monRed.length; j++) {
-			    			if (monRed[j][2] <= monBlue[i][4] || monBlue[i][4] == 0) {
-				    			remain = true;
-				    		}
-			    		}
-			    		if (remain == false) {
-			    			d3.select('#cost-monge')
-					    		.append('text')
-					    		.attr('class', 'failM')
-					    		.attr('fill', '#bf7f65')
-					    		.attr('x', '15')
-					    		.attr('y', '475')
-					    		.style('font-size', '30px')
-					    		.style('font-weight', '600')
-					    		.style('max-width', '90%')
-					    		.text('invalid map. try again!')
+			    	let mid = midpoint([data[0], data[1]],[kanRed[data[3]][0], kanRed[data[3]][1]]);
 
-					    	failedM = 1;
-					    	highlightedM = monRed.length;
-			    		}
+			    	let textId = matId[data[3]][data[5]];
+			    	if (transMat[data[3]][data[5]] == 1) {
+			    		d3.select('#main-plot-kanto')
+			    		.append('text')
+			    		.attr('class', 'arrowText')
+			    		.attr('id', textId)
+			    		.attr('x', xp(mid[0]) - 5)
+			    		.attr('y', yp(mid[1]) + 8)
+			    		.attr('fill', '#3b2923')
+			    		.attr('text-anchor', 'middle')
 			    		
+			    		.attr('style', 'font-size: 24px; font-weight: 600')
+			    		.text(transMat[data[3]][data[5]])
+			    	} else {
+			    		d3.select('#main-plot-kanto')
+			    		.select('#'+textId)
+			    		.text(transMat[data[3]][data[5]])
 			    	}
-			    	highlightedM++;
-		    		if (highlightedM < monRed.length) {
-			    		monRed[highlightedM][3] = 1;
-			    	}
+			    	
+
+		    		kanRed[highlightedK][4]--;
+		    		if (kanRed[highlightedK][4] === 0) {
+		    			kanRed[highlightedK][3] = 0;
+		    			highlightedK++;
+		    			if (highlightedK < kanRed.length) {
+				    		kanRed[highlightedK][3] = 1;
+				    	}
+		    		}
+			    	
 		    	} else {
 		    		return;
 		    	}
@@ -535,7 +560,7 @@
 			y={yp(data[1]) + 8}
 			text-anchor='middle'
 			fill='white'
-			font-size=24px
+			font-size=24
 			font-weight=600
 		  >
 			{data[2]}
@@ -548,7 +573,7 @@
 		width=300
 		height={height}
 		class='cost'
-		id='cost-monge'
+		id='cost-kanto'
 	>
 		<text
 			x=15
@@ -564,13 +589,13 @@
 			font-weight='400'
 			font-size='24px'
 		>
-			&sum;(distance(i,j) * mass(i))=
+			&sum;(distance(i,j) * mass(i,j))=
 		</text>
 
-		{#if iM === monRed.length - 1}
+		{#if iK == totalWeight}
 			<text
 				x=20
-				y={textYM + 20}
+				y={textYK + 20}
 				font-weight='600'
 			>
 				_______________________________________
@@ -578,11 +603,11 @@
 
 			<text
 				x=23
-				y={textYM + 50}
+				y={textYK + 50}
 				font-weight='600'
 				font-size='24px'
 			>
-				total:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{totalCostM.toFixed(2)}
+				total:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{totalCostK.toFixed(2)}
 			</text>
 
 			<text
@@ -593,7 +618,7 @@
 				max-width='90%'
 				fill='#bf7f65'
 			>
-				{#if Math.abs(optM - totalCostM) < 0.01}
+				{#if Math.abs(optK - totalCostK) < 0.01}
 					optimal!!
 				{:else}
 					not optimal...
@@ -622,7 +647,7 @@
 		fill: #3b2923;
 		font-size: 28px;
 	}
-	.buttonsM:hover {
+	.buttonsK:hover {
 		cursor: pointer;
 	}
 	.bluePoint:hover {
@@ -651,7 +676,8 @@
 		stroke: rgba(255, 241, 84, 0.8);
 		stroke-width: 8px;
 		animation: blinking 0.8s linear infinite alternate-reverse;
-    }
+
+	}
 	.grid {
 		stroke: #b5b3b3;
 	}

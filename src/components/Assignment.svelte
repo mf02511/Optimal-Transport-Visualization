@@ -23,6 +23,131 @@
 		return parseFloat(Math.pow(Math.pow(Math.abs(x[0] - y[0]),2) + Math.pow(Math.abs(x[1] - y[1]),2),0.5).toFixed(2));
 	}
 
+	function angle(a, b) {
+		let theta;
+		if ((b[0] - a[0]) != 0) {
+			let slope = (b[1] - a[1]) / (b[0] - a[0]);
+			theta = Math.atan(slope);
+		} else {
+			theta = Math.PI / 2;
+		}
+		return theta;
+	}
+
+	function newPoint(a, ar, b, br) {
+		let theta = angle(a, b)
+		let xm = Math.abs(Math.cos(theta));
+		let ym = Math.abs(Math.sin(theta));
+
+		let aa = [a[0], a[1]];
+		let bb = [b[0], b[1]];
+
+		// above and to the right
+		if ((bb[0] > aa[0]) && (bb[1] < aa[1])) {
+			aa[0] = aa[0] + (ar * xm);
+			aa[1] = aa[1] - (ar * ym);
+			bb[0] = bb[0] - (br * xm);
+			bb[1] = bb[1] + (br * ym);
+		} 
+
+		// above and to the left
+		else if ((b[0] < a[0]) && (b[1] < a[1])) {
+			aa[0] = aa[0] - (ar * xm);
+			aa[1] = aa[1] - (ar * ym);
+			bb[0] = bb[0] + (br * xm);
+			bb[1] = bb[1] + (br * ym);
+		}
+
+		// below and to the left
+		else if ((b[0] < a[0]) && (b[1] > a[1])) {
+			aa[0] = aa[0] - (ar * xm);
+			aa[1] = aa[1] + (ar * ym);
+			bb[0] = bb[0] + (br * xm);
+			bb[1] = bb[1] - (br * ym);
+		}
+
+		// below and to the right
+		else if ((b[0] > a[0]) && (b[1] > a[1])) {
+			aa[0] = aa[0] + (ar * xm);
+			aa[1] = aa[1] + (ar * ym);
+			bb[0] = bb[0] - (br * xm);
+			bb[1] = bb[1] - (br * ym);
+		}
+
+		// horizontal and to the right
+		else if ((b[0] > a[0]) && (b[1] == a[1])) {
+			aa[0] = aa[0] + (ar * xm);
+        	bb[0] = bb[0] - (br * xm);
+		}
+
+		// horizontal and to the left
+		else if ((b[0] < a[0]) && (b[1] == a[1])) {
+			aa[0] = aa[0] - (ar * xm);
+        	bb[0] = bb[0] + (br * xm);
+		}
+
+		// vertical and to the top
+		else if ((b[0] == a[0]) && (b[1] < a[1])) {
+			aa[1] = aa[1] - (ar * ym);
+        	bb[1] = bb[1] + (br * ym);
+		}
+
+		// vertical and to the bottom
+		else if ((b[0] == a[0]) && (b[1] > a[1])) {
+			aa[1] = aa[1] + (ar * ym);
+        	bb[1] = bb[1] - (br * ym);
+		}
+
+		return [aa, bb];
+	}
+
+	/*
+	function arrowEndPoints(a, ar, b, br) {
+		let endA = a;
+		let endB = b;
+		if (a[0] < b[0]) {
+			if (a[1] == b[1]){
+				endA[0] += ar;
+				endB[0] -= br;
+			}else if (a[1] < b[1]) {
+				endA[0] += ar/1.414;
+				endB[0] -= br/1.414;
+				endA[1] += ar/1.414;
+				endB[1] -= br/1.414;
+			} else {
+				endA[0] += ar/1.414;
+				endB[0] -= br/1.414;
+				endA[1] -= ar/1.414;
+				endB[1] += br/1.414;
+			}
+		} else if (a[0] > b[0]) {
+			if (a[1] == b[1]){
+				endA[0] -= ar;
+				endB[0] += br;
+			}else if (a[1] < b[1]) {
+				endA[0] -= ar/1.414;
+				endB[0] += br/1.414;
+				endA[1] += ar/1.414;
+				endB[1] -= br/1.414;
+			} else {
+				endA[0] -= ar/1.414;
+				endB[0] += br/1.414;
+				endA[1] -= ar/1.414;
+				endB[1] += br/1.414;
+			}
+		} else {
+			if (a[1] < b[1]) {
+				endA[1] += ar;
+				endB[1] -= br;
+			} else if (a[1] > b[1]) {
+				endA[1] -= ar;
+				endB[1] += br;
+			}
+		}
+		return [endA, endB];
+	}
+	*/
+
 	function reset() {
 		for (let i = 0; i < eqRed.length; i++) {
 			if (i === 0) {
@@ -39,7 +164,8 @@
 		i = -1;
 		totalCost = 0;
 		costArr = [];
-		textY = 50;
+		textY = 80;
+		failed = 0;
 		d3.select('#cost')
 			.selectAll('.dists')
 			.remove();
@@ -50,7 +176,7 @@
 
 	var sym = d3.symbol().type(d3.symbolTriangle).size(500);
 
-	$: N = 0;
+	let N = 0;
 
 	$: line = d3.line()
 	  .x(d => d[0])
@@ -65,24 +191,31 @@
 	let highlighted;
 	let opt;
 
+	let failed;
+	$: if (i === eqRed.length - 1 && Math.abs(opt - totalCost) > 0.01) {
+		failed = 1;
+	}
+
 	$: if (N===0) {
 		eqRed = [[7, 8, 1], [7, 2, 0]];
 		eqBlue = [[4, 5, -1], [10, 5, -1]];
 		totalCost = 0;
 		costArr = [];
-		textY = 50;
+		textY = 80;
 		i = -1;
 		highlighted = 0;
 		opt = 8.48;
+		failed = 0;
 	} else {
-		eqRed = [[7, 8, 1], [4, 3, 0], [12, 2, 0]];
+		eqRed = [ [4, 3, 1], [7, 8, 0], [12, 2, 0]];
 		eqBlue = [[10, 6, -1], [9, 3, -1], [3, 7, -1]];
 		totalCost = 0;
 		costArr = [];
-		textY = 50;
+		textY = 80;
 		i = -1;
 		highlighted = 0;
 		opt = 10.89;
+		failed = 0;
 	}
 
 	
@@ -97,34 +230,35 @@
 		class='instruction'
 		style='color: #3b2923; font-size: 20px; font-family: "Roboto Condensed", sans-serif'
 	>
-		&nbsp;&nbsp;&nbsp; map the highlighted <span style='color: #da7454'>red</span> point to a <span style='color: #7685c0'>blue</span> point:
+		map the highlighted <span style='color: #da7454'>red</span> point to a <span style='color: #7685c0'>blue</span> point:
 	</p>
 	<svg
 		width = {1000}
 		height = {50}
-		class='buttons'
+		class='buttonBar'
 	>
   		<g
+  			class='buttons'
   			on:click={(event) => {
   					if (N === 0) {
   						return;
   					} else {
   						N--;
-  						d3.select('.buttons')
+  						d3.selectAll('.buttons')
   							.selectAll('.prev')
   							.attr('fill', 'lightgrey')
   							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
-  						d3.select('.buttons')
+  						d3.selectAll('.buttons')
   							.selectAll('.prev-text')
   							.attr('fill', 'rgba(235, 235, 235, 0.7)');
 
-  						d3.select('.buttons')
+  						d3.selectAll('.buttons')
   							.selectAll('.next')
   							.attr('fill', 'rgba(235, 235, 235, 0.7)')
   							.attr('stroke', '#d9bdb2');
 
-						d3.select('.buttons')
+						d3.selectAll('.buttons')
 							.selectAll('.next-text')
 							.attr('fill', '#d9bdb2');
 						reset();
@@ -152,6 +286,7 @@
   		</g>
 
   		<g
+  			class='buttons'
   			on:click={(event) => {
 					reset();
 				}}
@@ -165,6 +300,7 @@
   				stroke='#d9bdb2'
   				stroke-width='3px'
   				fill='rgba(235, 235, 235, 0.7)'
+  				class={failed === 1 ? 'highlight':'static'}
   			/>
   			<text
   				x='323'
@@ -174,26 +310,27 @@
   			</text>
   		</g>
   		<g
+  			class='buttons'
   			on:click={(event) => {
   					if (N === 1) {
   						return;
   					} else {
   						N++;
-  						d3.select('.buttons')
+  						d3.selectAll('.buttons')
   							.selectAll('.next')
   							.attr('fill', 'lightgrey')
   							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
-						d3.select('.buttons')
+						d3.selectAll('.buttons')
 							.selectAll('.next-text')
 							.attr('fill', 'rgba(235, 235, 235, 0.7)');
 
-						d3.select('.buttons')
+						d3.selectAll('.buttons')
 	  							.selectAll('.prev')
 	  							.attr('fill', 'rgba(235, 235, 235, 0.7)')
 	  							.attr('stroke', '#d9bdb2');
 
-						d3.select('.buttons')
+						d3.selectAll('.buttons')
 							.selectAll('.prev-text')
 							.attr('fill', '#d9bdb2');
 						reset();
@@ -202,7 +339,7 @@
   				}}
   		>
   			<circle
-  				class='next'
+  				class={(i === eqRed.length - 1 && N < 1 && failed === 0) ? 'highlight next':'static next'}
   				cx='475'
   				cy='25'
   				r='20'
@@ -276,7 +413,7 @@
 	  {/each}
 	  {#each eqBlue as data}
 		  <circle
-		  	class = 'static'
+		  	class = 'bluePoint'
 		    cx={xp(data[0])}
 		    cy={yp(data[1])}
 		    fill='#7685c0'
@@ -306,12 +443,11 @@
 			    	d3.select('#main-plot')
 			    		.append('path')
 			    		.attr('class', 'lines')
-			    		.attr('d', line([[xp(data[0]), yp(data[1])], [xp(eqRed[data[2]][0]), yp(eqRed[data[2]][1])]]))
+			    		.attr('d', line(newPoint([xp(data[0]), yp(data[1])], radSize, [xp(eqRed[data[2]][0]), yp(eqRed[data[2]][1])], radSize)))
 			    		.attr('stroke', '#82675e')
 			    		.attr('stroke-dasharray', '5,5')
 			    		.attr('stroke-width', '2px')
 			    		.attr('marker-start', 'url(#arrow)')
-			    	return costArr;
 		    	} else {
 		    		return;
 		    	}
@@ -333,6 +469,14 @@
 			font-size='30px'
 		>
 			cost:
+		</text>
+		<text
+			x=15
+			y=70
+			font-weight='400'
+			font-size='24px'
+		>
+			&sum;(distance(i,j))=
 		</text>
 
 		{#if i === eqRed.length - 1}
@@ -377,16 +521,24 @@
 		width: 70%;
 		font-family: "Roboto Condensed", sans-serif;
 	}
-	
+	p {
+		margin-left: 2%;
+	}
 	text {
 		padding: 0;
 	}
 
-	.buttons {
+	.buttonBar {
 		display: block;
 		margin: auto;
 		fill: #3b2923;
 		font-size: 28px;
+	}
+	.buttons:hover {
+		cursor: pointer;
+	}
+	.bluePoint:hover {
+		cursor: pointer;
 	}
 	.main-plot {
 	  	height: auto;
@@ -408,10 +560,16 @@
 
 	.highlight {
 		stroke: rgba(255, 241, 84, 0.8);
-		stroke-width: 4px;
+		stroke-width: 8px;
+		animation: blinking 0.8s linear infinite alternate-reverse;
 
 	}
 	.grid {
 		stroke: #b5b3b3;
+	}
+
+	@keyframes blinking {
+	  from { stroke-opacity: 1; }
+	  to { stroke-opacity: 0.1; }
 	}
 </style>
