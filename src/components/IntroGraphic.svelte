@@ -11,6 +11,7 @@
 <svg
 	width='100%'
 	height='600px'
+	class='intro-graphic'
 >
 	<defs>
 	    <marker
@@ -98,6 +99,9 @@
 </svg>
 
 <style>
+	.intro-graphic {
+		margin-left: 25px;
+	}
 	.factory {
 		width: 120px;
 	}

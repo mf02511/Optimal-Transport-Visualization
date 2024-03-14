@@ -277,11 +277,12 @@
 >
 	<p
 		class='instruction'
-		style='color: #3b2923; font-size: 20px; font-family: "Roboto Condensed", sans-serif'
+		style='color: #3b2923; font-size: 22px; font-weight: 400; font-family: "Roboto Condensed", sans-serif; margin-bottom: 8px; margin-top: 8px;'
 	>
-		map the highlighted <span style='color: #da7454'>red</span> point to a <span style='color: #7685c0'>blue</span> point:
-		<br>
-		<span style='font-size: 16px'><i>note: transport the mass of the red points by 1 with each click.</i></span>
+		click on a <span style='color: #7685c0; font-weight: 600;'>store</span> to transport the products from the <mark style=' background-color: rgba(255, 241, 84, 0.4)'><span style='color: #da7454; font-weight: 600;'>factory</span></mark>:
+	</p>
+	<p style='font-size: 16px; margin-bottom: 20px; margin-top: 8px;'>
+		note: each click delivers 1 unit of product from the factory
 	</p>
 	<svg
 		width = {1000}
@@ -289,29 +290,33 @@
 		class='buttonBar'
 	>
   		<g
-  			class='buttonsK'
+  			id='prevButtonK'
   			on:click={(event) => {
   					if (N === 0) {
   						return;
   					} else {
   						N--;
   						if (N === 0) {
-  							d3.selectAll('.buttonsK')
+  							d3.select('#prevButtonK')
+  								.style('cursor', 'default');
+  							d3.selectAll('#prevButtonK')
   							.selectAll('.prevK')
   							.attr('fill', 'lightgrey')
   							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
-	  						d3.selectAll('.buttonsK')
+	  						d3.selectAll('#prevButtonK')
 	  							.selectAll('.prev-textK')
 	  							.attr('fill', 'rgba(235, 235, 235, 0.7)');
   						}
-  						
-  						d3.selectAll('.buttonsK')
+  						d3.select('#nextButtonK')
+  								.style('cursor', 'pointer');
+
+  						d3.selectAll('#nextButtonK')
   							.selectAll('.nextK')
   							.attr('fill', 'rgba(235, 235, 235, 0.7)')
   							.attr('stroke', '#d9bdb2');
 
-						d3.selectAll('.buttonsK')
+						d3.selectAll('#nextButtonK')
 							.selectAll('.next-textK')
 							.attr('fill', '#d9bdb2');
 						reset();
@@ -339,7 +344,8 @@
   			</text>
   		</g>
 		<g
-			class='buttonsK'
+			id='restButtonK'
+			style='cursor: pointer'
   			on:click={(event) => {
 					reset();
 				}}
@@ -363,7 +369,8 @@
   			</text>
   		</g>
   		<g
-  			class='buttonsK'
+  			id='nextButtonK'
+  			style='cursor: pointer'
   			on:click={(event) => {
   					if (N === 2) {
   						return;
@@ -371,23 +378,28 @@
   						N++;
 
   						if (N === 2) {
-	  						d3.selectAll('.buttonsK')
+  							d3.select('#nextButtonK')
+  								.style('cursor', 'default');
+
+	  						d3.selectAll('#nextButtonK')
 	  							.selectAll('.nextK')
 	  							.attr('fill', 'lightgrey')
 	  							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
-							d3.selectAll('.buttonsK')
+							d3.selectAll('#nextButtonK')
 								.selectAll('.next-textK')
 								.attr('fill', 'rgba(235, 235, 235, 0.7)');
   						}
   						
+  						d3.select('#prevButtonK')
+  								.style('cursor', 'pointer');
 
-						d3.selectAll('.buttonsK')
+						d3.selectAll('#prevButtonK')
 	  							.selectAll('.prevK')
 	  							.attr('fill', 'rgba(235, 235, 235, 0.7)')
 	  							.attr('stroke', '#d9bdb2');
 
-						d3.selectAll('.buttonsK')
+						d3.selectAll('#prevButtonK')
 							.selectAll('.prev-textK')
 							.attr('fill', '#d9bdb2');
 						reset();
@@ -630,8 +642,8 @@
 
 <style>
 	.assignment-demo {
-		margin: auto;
-		width: 90%;
+		width: 100%;
+		margin: 0;
 		font-family: "Roboto Condensed", sans-serif;
 	}
 	p {
@@ -642,14 +654,14 @@
 	}
 
 	.buttonBar {
+		width: 100%;
 		display: block;
-		margin: auto;
+		margin-left: 15.1%;
+		margin-bottom: 20px;
 		fill: #3b2923;
 		font-size: 28px;
 	}
-	.buttonsK:hover {
-		cursor: pointer;
-	}
+	
 	.bluePoint:hover {
 		cursor: pointer;
 	}
@@ -657,15 +669,15 @@
 	  	height: auto;
 	  	background-color: rgba(235, 235, 235, 0.5);
 	  	display: inline;
-	  	margin-right: 10px;
-	  	margin-left: 200px;
+	  	margin-left: 15%;
+	  	margin-right: 0;
 	  	border: #d9bdb2 solid 4px;
 	}
 	.cost {
 		background-color: rgba(235, 235, 235, 0.4);
 		display:inline;
-		margin: 20px;
-		margin-top: 0px;
+		margin-left: 20px;
+		margin-right: 15%;
 		fill: #3b2923;
 	}
 

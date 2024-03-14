@@ -12,6 +12,7 @@ let play = 0;
 </script>
 
 <svg
+	class='animateButtonBand'
 	width='100%'
 	height='100'
 >
@@ -28,9 +29,7 @@ let play = 0;
 			height='45'
 			width='150'
 			rx='15'
-			stroke='#d9bdb2'
-			stroke-width='3px'
-			fill='rgba(235, 235, 235, 0.7)'
+			
 		/>
 		<text
 			class={play===0 ? 'animateButtonText': 'disabledText'}
@@ -70,6 +69,7 @@ let play = 0;
 	</g>
 </svg>
 <svg
+	class='animation'
 	width='100%'
 	height='600px'
 >
@@ -242,7 +242,7 @@ let play = 0;
 	        marker-end='url(#arrow)'
 		/>
 		<text
-			x='650'
+			x='700'
 			y='100'
 			text-anchor='middle'
 			fill='#82675e'
@@ -263,8 +263,8 @@ let play = 0;
 	        marker-end='url(#arrow)'
 		/>
 		<text
-			x='780'
-			y='170'
+			x='700'
+			y='155'
 			text-anchor='middle'
 			fill='#82675e'
 			font-size='28px'
@@ -284,8 +284,8 @@ let play = 0;
         marker-end='url(#arrow)'
 	/>
 	<text
-		x='760'
-		y='290'
+		x='700'
+		y='300'
 		text-anchor='middle'
 		fill='#82675e'
 		font-size='28px'
@@ -318,6 +318,10 @@ let play = 0;
 </svg>
 	
 <style>
+	.animation {
+		margin-left: 25px;
+	}
+
 	text {
 		font-family: "Roboto Condensed", sans-serif; 
 	}
@@ -338,6 +342,7 @@ let play = 0;
 		opacity: 0;
 	}
 	.animateButtonRect {
+		stroke-width: 3px;
 		fill: rgba(235, 235, 235, 0.7);
 		stroke: #d9bdb2;
 	}
@@ -345,11 +350,9 @@ let play = 0;
 		fill: #3b2923;
 	}
 	.animateButton:hover {
-		font-weight: 800;
 		cursor: pointer;
 	}
 	.resetAnimate:hover {
-		font-weight: 800;
 		cursor: pointer;
 	}
 	.resetAnimateText {
@@ -365,13 +368,14 @@ let play = 0;
 	.disabledRect {
 		fill: lightgrey;
 		stroke: rgba(235, 235, 235, 0.7);
+		stroke-width: 3px;
 	}
 
 	.boxAA {
 		width: 50px;
 		transform: translate(500px, 0px);
 		animation-name: moveAA;
-		animation-duration: 5s;
+		animation-duration: 4s;
 		animation-iteration-count: 1;
 		animation-timing-function: ease-in-out;
 	}
@@ -380,7 +384,7 @@ let play = 0;
 		width: 50px;
 		transform: translate(470px, -40px);
 		animation-name: moveAB;
-		animation-duration: 5s;
+		animation-duration: 4s;
 		animation-iteration-count: 1;
 		animation-timing-function: ease-in-out;
 	}
@@ -388,7 +392,7 @@ let play = 0;
 		width: 50px;
 		transform: translate(650px, 100px);
 		animation-name: moveAC;
-		animation-duration: 10s;
+		animation-duration: 8s;
 		animation-iteration-count: 1;
 		animation-timing-function: ease-in-out;
 	}
@@ -396,7 +400,7 @@ let play = 0;
 		width: 50px;
 		transform: translate(660px, -180px);
 		animation-name: moveBB;
-		animation-duration: 15s;
+		animation-duration: 12s;
 		animation-iteration-count: 1;
 		animation-timing-function: ease-in-out;
 	}
@@ -404,7 +408,7 @@ let play = 0;
 		width: 50px;
 		transform: translate(620px, 20px);
 		animation-name: moveBA;
-		animation-duration: 20s;
+		animation-duration: 16s;
 		animation-iteration-count: 1;
 		animation-timing-function: ease-in-out;
 	}
@@ -462,7 +466,7 @@ let play = 0;
     	width: 80px;
     	opacity: 0;
     	animation-name: moveTruckAA;
-		animation-duration: 5s;
+		animation-duration: 4s;
 		animation-iteration-count: 1;
 		animation-timing-function: ease-in-out;
     }
@@ -484,7 +488,7 @@ let play = 0;
     	width: 80px;
     	opacity: 0;
     	animation-name: moveTruckAB;
-		animation-duration: 10s;
+		animation-duration: 8s;
 		animation-iteration-count: 1;
 		animation-timing-function: ease-in-out;
     }
@@ -513,7 +517,7 @@ let play = 0;
     	width: 80px;
     	opacity: 0;
     	animation-name: moveTruckBB;
-		animation-duration: 15s;
+		animation-duration: 12s;
 		animation-iteration-count: 1;
 		animation-timing-function: ease-in-out;
     }
@@ -541,7 +545,7 @@ let play = 0;
     	width: 80px;
     	opacity: 0;
     	animation-name: moveTruckBC;
-		animation-duration: 20s;
+		animation-duration: 16s;
 		animation-iteration-count: 1;
 		animation-timing-function: ease-in-out;
     }
@@ -568,7 +572,7 @@ let play = 0;
     .arrowAA {
     	opacity: 1;
     	animation-name: showArrowAA;
-    	animation-duration: 5s;
+    	animation-duration: 4s;
     	animation-iteration-count: 1;
 		animation-timing-function: ease-in-out;
     }
@@ -586,7 +590,7 @@ let play = 0;
     .arrowAB {
     	opacity: 1;
     	animation-name: showArrowAB;
-    	animation-duration: 10s;
+    	animation-duration: 8s;
     	animation-iteration-count: 1;
 		animation-timing-function: ease-in-out;
     }
@@ -605,7 +609,7 @@ let play = 0;
     .arrowBB {
     	opacity: 1;
     	animation-name: showArrowBB;
-    	animation-duration: 15s;
+    	animation-duration: 12s;
     	animation-iteration-count: 1;
 		animation-timing-function: ease-in-out;
     }
@@ -623,7 +627,7 @@ let play = 0;
     .arrowBC {
     	opacity: 1;
     	animation-name: showArrowBC;
-    	animation-duration: 20s;
+    	animation-duration: 16s;
     	animation-iteration-count: 1;
 		animation-timing-function: ease-in-out;
     }

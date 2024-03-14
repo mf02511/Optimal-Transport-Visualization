@@ -254,11 +254,12 @@
 >
 	<p
 		class='instruction'
-		style='color: #3b2923; font-size: 20px; font-family: "Roboto Condensed", sans-serif'
+		style='color: #3b2923; font-size: 22px; font-weight: 400; font-family: "Roboto Condensed", sans-serif; margin-bottom: 8px; margin-top: 8px;'
 	>
-		map the highlighted <span style='color: #da7454'>red</span> point to a <span style='color: #7685c0'>blue</span> point:
-		<br>
-		<span style='font-size: 16px'><i>note: take into account the mass of each point.</i></span>
+		click on a <span style='color: #7685c0; font-weight: 600;'>store</span> to transport the products from the <mark style=' background-color: rgba(255, 241, 84, 0.4)'><span style='color: #da7454; font-weight: 600;'>factory</span></mark>:
+	</p>
+	<p style='font-size: 16px; margin-bottom: 20px; margin-top: 8px;'>
+		hint: take into account the amount of products produced at each factory and needed at each store
 	</p>
 	<svg
 		class='buttonBar'
@@ -266,29 +267,34 @@
 		height = {50}
 	>
   		<g
-  			class='buttonsM'
+  			id='prevButtonM'
+  			style='cursor: default'
   			on:click={(event) => {
   					if (N === 0) {
   						return;
   					} else {
   						N--;
   						if (N === 0) {
-  							d3.select('.buttonsM')
-  							.selectAll('.prevM')
-  							.attr('fill', 'lightgrey')
-  							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
+  							d3.select('#prevButtonM')
+  								.style('cursor', 'default')
+  							d3.selectAll('#prevButtonM')
+	  							.selectAll('.prevM')
+	  							.attr('fill', 'lightgrey')
+	  							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
-	  						d3.select('.buttonsM')
+	  						d3.selectAll('#prevButtonM')
 	  							.selectAll('.prev-textM')
 	  							.attr('fill', 'rgba(235, 235, 235, 0.7)');
   						}
-  						
-  						d3.select('.buttonsM')
+  						d3.select('#nextButtonM')
+  								.style('cursor', 'pointer')
+
+  						d3.selectAll('#nextButtonM')
   							.selectAll('.nextM')
   							.attr('fill', 'rgba(235, 235, 235, 0.7)')
   							.attr('stroke', '#d9bdb2');
 
-						d3.select('.buttonsM')
+						d3.selectAll('#nextButtonM')
 							.selectAll('.next-textM')
 							.attr('fill', '#d9bdb2');
 						reset();
@@ -316,7 +322,7 @@
   			</text>
   		</g>
 		<g
-			class='buttonsM'
+			style="cursor: pointer"
   			on:click={(event) => {
 					reset();
 				}}
@@ -341,7 +347,8 @@
   			</text>
   		</g>
   		<g
-  			class='buttonsM'
+  			id='nextButtonM'
+  			style='cursor: pointer'
   			on:click={(event) => {
   					if (N === 2) {
   						return;
@@ -349,23 +356,27 @@
   						N++;
 
   						if (N === 2) {
-	  						d3.selectAll('.buttonsM')
+  							d3.select('#nextButtonM')
+  								.style('cursor', 'default')
+	  						d3.selectAll('#nextButtonM')
 	  							.selectAll('.nextM')
 	  							.attr('fill', 'lightgrey')
 	  							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
-							d3.selectAll('.buttonsM')
+							d3.selectAll('#nextButtonM')
 								.selectAll('.next-textM')
 								.attr('fill', 'rgba(235, 235, 235, 0.7)');
   						}
   						
+  						d3.select('#prevButtonM')
+  								.style('cursor', 'pointer')
 
-						d3.selectAll('.buttonsM')
+						d3.selectAll('#prevButtonM')
 	  							.selectAll('.prevM')
 	  							.attr('fill', 'rgba(235, 235, 235, 0.7)')
 	  							.attr('stroke', '#d9bdb2');
 
-						d3.selectAll('.buttonsM')
+						d3.selectAll('#prevButtonM')
 							.selectAll('.prev-textM')
 							.attr('fill', '#d9bdb2');
 						reset();
@@ -459,6 +470,7 @@
 	  {#each monBlue as data}
 	  	<g
 	  		class='bluePoint'
+	  		style='cursor: pointer'
 	  		on:click={(event) => {
 		    	if (data[4] > 0 && monRed[highlightedM][2] <= data[4]) {
 		    		data[4]-=monRed[highlightedM][2];
@@ -605,8 +617,8 @@
 
 <style>
 	.assignment-demo {
-		margin: auto;
-		width: 90%;
+		width: 100%;
+		margin: 0;
 		font-family: "Roboto Condensed", sans-serif;
 	}
 	p {
@@ -617,32 +629,30 @@
 	}
 
 	.buttonBar {
+		width: 100%;
 		display: block;
-		margin: auto;
+		margin-left: 15.1%;
+		margin-bottom: 20px;
 		fill: #3b2923;
 		font-size: 28px;
 	}
-	.buttonsM:hover {
-		cursor: pointer;
-	}
-	.bluePoint:hover {
-		cursor: pointer;
-	}
+	
 	.main-plot {
 	  	height: auto;
 	  	background-color: rgba(235, 235, 235, 0.5);
 	  	display: inline;
-	  	margin-right: 10px;
-	  	margin-left: 200px;
+	  	margin-left: 15%;
+	  	margin-right: 0;
 	  	border: #d9bdb2 solid 4px;
 	}
 	.cost {
 		background-color: rgba(235, 235, 235, 0.4);
 		display:inline;
-		margin: 20px;
-		margin-top: 0px;
+		margin-left: 20px;
+		margin-right: 15%;
 		fill: #3b2923;
 	}
+
 
 	.static {
 	}

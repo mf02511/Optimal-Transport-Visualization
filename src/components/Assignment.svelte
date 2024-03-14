@@ -228,9 +228,9 @@
 >
 	<p
 		class='instruction'
-		style='color: #3b2923; font-size: 20px; font-family: "Roboto Condensed", sans-serif'
+		style='color: #3b2923; font-size: 22px; font-weight: 400; font-family: "Roboto Condensed", sans-serif'
 	>
-		map the highlighted <span style='color: #da7454'>red</span> point to a <span style='color: #7685c0'>blue</span> point:
+		click on a <span style='color: #7685c0; font-weight: 600;'>store</span> to transport the products from the <mark style=' background-color: rgba(255, 241, 84, 0.4)'><span style='color: #da7454; font-weight: 600;'>factory</span></mark>:
 	</p>
 	<svg
 		width = {1000}
@@ -238,27 +238,31 @@
 		class='buttonBar'
 	>
   		<g
-  			class='buttons'
+  			id='prevButton'
   			on:click={(event) => {
   					if (N === 0) {
   						return;
   					} else {
   						N--;
-  						d3.selectAll('.buttons')
+  						d3.select('#prevButton')
+  							.style('cursor', 'default');
+  						d3.selectAll('#prevButton')
   							.selectAll('.prev')
   							.attr('fill', 'lightgrey')
   							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
-  						d3.selectAll('.buttons')
+  						d3.selectAll('#prevButton')
   							.selectAll('.prev-text')
   							.attr('fill', 'rgba(235, 235, 235, 0.7)');
 
-  						d3.selectAll('.buttons')
+  						d3.select('#nextButton')
+  							.style('cursor', 'pointer');
+  						d3.selectAll('#nextButton')
   							.selectAll('.next')
   							.attr('fill', 'rgba(235, 235, 235, 0.7)')
   							.attr('stroke', '#d9bdb2');
 
-						d3.selectAll('.buttons')
+						d3.selectAll('#nextButton')
 							.selectAll('.next-text')
 							.attr('fill', '#d9bdb2');
 						reset();
@@ -286,7 +290,8 @@
   		</g>
 
   		<g
-  			class='buttons'
+  			id='resetButton'
+  			style='cursor: pointer'
   			on:click={(event) => {
 					reset();
 				}}
@@ -310,27 +315,37 @@
   			</text>
   		</g>
   		<g
-  			class='buttons'
+  			id='nextButton'
+  			style='cursor: pointer'
+  			on:mouseover={(event) => {
+  				d3.select('#nextButton')
+  					.style('font-size', '30');
+  			}}
   			on:click={(event) => {
   					if (N === 1) {
   						return;
   					} else {
   						N++;
-  						d3.selectAll('.buttons')
+  						d3.select('#nextButton')
+  							.style('cursor', 'default');
+  						d3.selectAll('#nextButton')
   							.selectAll('.next')
   							.attr('fill', 'lightgrey')
   							.attr('stroke', 'rgba(235, 235, 235, 0.7)');
 
-						d3.selectAll('.buttons')
+						d3.selectAll('#nextButton')
 							.selectAll('.next-text')
 							.attr('fill', 'rgba(235, 235, 235, 0.7)');
 
-						d3.selectAll('.buttons')
+						d3.select('#prevButton')
+  							.style('cursor', 'pointer');
+
+						d3.selectAll('#prevButton')
 	  							.selectAll('.prev')
 	  							.attr('fill', 'rgba(235, 235, 235, 0.7)')
 	  							.attr('stroke', '#d9bdb2');
 
-						d3.selectAll('.buttons')
+						d3.selectAll('#prevButton')
 							.selectAll('.prev-text')
 							.attr('fill', '#d9bdb2');
 						reset();
@@ -517,20 +532,22 @@
 
 <style>
 	.assignment-demo {
-		margin: auto;
-		width: 70%;
+		width: 100%;
+		margin: 0;
 		font-family: "Roboto Condensed", sans-serif;
 	}
 	p {
-		margin-left: 2%;
+		margin-left: 15%;
 	}
 	text {
 		padding: 0;
 	}
 
 	.buttonBar {
+		width: 100%;
 		display: block;
-		margin: auto;
+		margin-left: 15.1%;
+		margin-bottom: 20px;
 		fill: #3b2923;
 		font-size: 28px;
 	}
@@ -544,14 +561,15 @@
 	  	height: auto;
 	  	background-color: rgba(235, 235, 235, 0.5);
 	  	display: inline;
-	  	margin: 20px;
+	  	margin-left: 15%;
+	  	margin-right: 0;
 	  	border: #d9bdb2 solid 4px;
 	}
 	.cost {
 		background-color: rgba(235, 235, 235, 0.4);
 		display:inline;
-		margin: 20px;
-		margin-top: 0px;
+		margin-left: 20px;
+		margin-right: 15%;
 		fill: #3b2923;
 	}
 
