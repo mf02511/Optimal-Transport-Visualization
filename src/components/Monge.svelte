@@ -622,7 +622,7 @@
 		font-family: "Roboto Condensed", sans-serif;
 	}
 	p {
-		margin-left: 15%;
+		margin-left: 10%;
 	}
 	text {
 		padding: 0;
@@ -631,7 +631,7 @@
 	.buttonBar {
 		width: 100%;
 		display: block;
-		margin-left: 15.1%;
+		margin-left: 10.1%;
 		margin-bottom: 20px;
 		fill: #3b2923;
 		font-size: 28px;
@@ -641,7 +641,7 @@
 	  	height: auto;
 	  	background-color: rgba(235, 235, 235, 0.5);
 	  	display: inline;
-	  	margin-left: 15%;
+	  	margin-left: 10%;
 	  	margin-right: 0;
 	  	border: #d9bdb2 solid 4px;
 	}
@@ -649,7 +649,6 @@
 		background-color: rgba(235, 235, 235, 0.4);
 		display:inline;
 		margin-left: 20px;
-		margin-right: 15%;
 		fill: #3b2923;
 	}
 

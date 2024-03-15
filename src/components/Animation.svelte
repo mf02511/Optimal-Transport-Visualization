@@ -319,7 +319,7 @@ let play = 0;
 	
 <style>
 	.animation {
-		margin-left: 25px;
+		margin-left: 0px;
 	}
 
 	text {

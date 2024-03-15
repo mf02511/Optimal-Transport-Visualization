@@ -35,7 +35,7 @@
     <Assignment />
     <br>
     <p>
-    We can see that this is a relatively easy problem to optimize since the only factory in play is the distance! But what if the company has more store locations than factories or vice versa? Or, if each factory produces different amount of products?
+    We can see that this is a relatively easy problem to optimize since the only factor in play is the distance! But what if the company has more store locations than factories or vice versa? Or, if each factory produces different amount of products?
     </p>
     <h2><i>Monge Problem</i></h2>
     <p>
@@ -160,104 +160,5 @@
     animation-name: bodyFade;
   }
 
-  .intro-images {
-    height: 450px;
-  }
-  .factory {
-    width: 120px;
-  }
-  .store {
-    width: 120px;
-  }
-  .truck {
-    width: 90px;
-  }
 
-  #factoryA {
-    position: absolute;
-    left: 240px;
-    top: 250px;
-  }
-  #factoryB {
-    position: absolute;
-    left: 90px;
-    top: 475px;
-  }
-
-  #storeA {
-    position: absolute;
-    left: 950px;
-    top: 265px;
-  }
-  #storeB {
-    position: absolute;
-    left: 1250px;
-    top: 370px;
-  }
-  #storeC {
-    position: absolute;
-    left: 1050px;
-    top: 550px;
-  }
-
-  #truckA {
-    position: absolute;
-    left: 580px;
-    top: 315px;
-  }
-
-  #truckB {
-    position: absolute;
-    left: 660px;
-    top: 440px;
-    transform: rotate(20deg);
-  }
-
-  #truckC {
-    position: absolute;
-    left: 360px;
-    top: 525px;
-    transform: rotate(-8deg);
-  }
-
-  @keyframes titleFade {
-    0% {
-      opacity: 0;
-    }
-    25% {
-      opacity: 0;
-    }
-    50% {
-      opacity: 50%;
-    }
-    80% {
-      opacity: 100%;
-    }
-    100% {
-      opacity: 100%;
-    }
-  }
-
-  @keyframes truckMove {
-    0% {
-      left: 0;
-      opacity: 100%;
-    }
-    100% {
-      left: 100%;
-      opacity: 100%;
-    }
-  }
-
-  @keyframes bodyFade {
-    0% {
-      opacity: 0%;
-    }
-    75% {
-      opacity: 0%;
-    }
-    100% {
-      opacity: 100%;
-    }
-  }
 </style>

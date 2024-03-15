@@ -100,7 +100,7 @@
 
 <style>
 	.intro-graphic {
-		margin-left: 25px;
+		margin-left: 0px;
 	}
 	.factory {
 		width: 120px;
