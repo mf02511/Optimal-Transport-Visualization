@@ -160,5 +160,48 @@
     animation-name: bodyFade;
   }
 
+  .intro-images {
+    height: 450px;
+  }
 
+  @keyframes titleFade {
+    0% {
+      opacity: 0;
+    }
+    25% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 50%;
+    }
+    80% {
+      opacity: 100%;
+    }
+    100% {
+      opacity: 100%;
+    }
+  }
+
+  @keyframes truckMove {
+    0% {
+      left: 0;
+      opacity: 100%;
+    }
+    100% {
+      left: 100%;
+      opacity: 100%;
+    }
+  }
+
+  @keyframes bodyFade {
+    0% {
+      opacity: 0%;
+    }
+    75% {
+      opacity: 0%;
+    }
+    100% {
+      opacity: 100%;
+    }
+  }
 </style>
