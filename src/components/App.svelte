@@ -15,6 +15,9 @@
   <img src='truck.svg' id='title-truck'/>
   <h1>Optimal Transport Mapping</h1>
   <div id='main-body'>
+    <div style='text-align: center'>
+      <a href='https://youtu.be/fe6x_Y1jLPQ?si=vdgXDiFr04nzHECn' style='color: #7685c0; font-size: 20px'>Click here for a demonstration video!</a>
+    </div>
     <p class='intro'>
     Wasserstein distance is a measure of dissimilarity between two probability distributions, which has a variety of applications in modern machine learning. This distance is calculated by finding the path that minimizes the total cost of transferring mass from one distribution to the other, referred to as the <b>optimal transport map</b>. This problem was first introduced by French mathematician Gaspard Monge in 1781. 
     <br><br> 
@@ -82,7 +85,7 @@
     </p>
     <h2><i>With what we've learned...</i></h2>
     <p style='line-height: 1.7'>
-    With her knowledge of optimal transport mapping, the employee utilizes the Python package <a href='https://pythonot.github.io/'>POT: Python Optimal Transport</a> to successfully compute a delivery plan for her company that would optimize their resources! Click on the 
+    With her knowledge of optimal transport mapping, the employee utilizes the Python package <a href='https://pythonot.github.io/' style='color: #7685c0'>POT: Python Optimal Transport</a> to successfully compute a delivery plan for her company that would optimize their resources! Click on the 
     <mark style='background-color: rgba(235, 235, 235, 1); border: #d9bdb2 solid 2px; border-radius: 8px; font-family: "Roboto Condensed", sans-serif; padding: 0.2em;'>&nbsp;&nbsp;transport!!&nbsp;&nbsp;</mark> 
     button below to see a snippet of her delivery plan!
     </p>
@@ -93,11 +96,17 @@
     </p>
     <br><br>
     <p style='text-align: center; font-size: 18px;'>
-    Here are some resources if you want to learn more about the mathematical formulations for optimal transport and Wasserstein distance:
+    <b>Here are some resources to learn more about the mathematical formulations for optimal transport:</b>
     <br>
-    <a href='https://doi.org/10.48550/arXiv.1803.00567'>Computational Optimal Transport, G. Peyré and M. Cuturi (2018)</a>
+    <a href='https://doi.org/10.48550/arXiv.1803.00567' style='color: #7685c0'>Computational Optimal Transport, G. Peyré and M. Cuturi (2018)</a>
     <br>
-    <a href='https://www.damtp.cam.ac.uk/research/cia/files/teaching/Optimal_Transport_Notes.pdf'>Introduction to Optimal Transport, M. Thorpe (2018)</a>
+    <a href='https://www.damtp.cam.ac.uk/research/cia/files/teaching/Optimal_Transport_Notes.pdf' style='color: #7685c0'>Introduction to Optimal Transport, M. Thorpe (2018)</a>
+    </p>
+    <p style='text-align: center; font-size: 24px; font-weight: 800'>. . .</p>
+    <p style='text-align: center; font-size: 18px;'>
+    [<a href='https://github.com/mf02511/Optimal-Transport-Visualization' style='color: #7685c0'>view the GitHub repository for this visualization</a>]
+    <br>
+    created by Ashley Ho & Mizuho Fukuda
     </p>
   </div>
 </main>
